@@ -186,19 +186,49 @@ function Team() {
         </div>
       </section>
 
-      {/* Team Values Section */}
+      {/* Why Choose Us Section */}
       <section className="team-values section-padding bg-light">
         <div className="container">
           <div className="section-header">
-            <span className="section-tag">Our Philosophy</span>
-            <h2 className="section-title">Why We Started BTI</h2>
-            <p className="section-subtitle">A shared vision to redefine consultancy with purpose-driven excellence.</p>
+            <span className="section-tag">Why Us</span>
+            <h2 className="section-title">Why Choose Us</h2>
+            <p className="section-subtitle">What sets us apart as your strategic partner for sustainable business growth.</p>
           </div>
-          <div className="values-story">
-            <div className="story-content">
-              <p className="story-lead">BTI was born from a shared belief that business success and ethical practices are not mutually exclusive—they are fundamentally intertwined.</p>
-              <p>Having witnessed the consulting industry from the inside, our founders recognized a gap: too many firms prioritized short-term gains over sustainable value creation. We set out to build a different kind of consultancy—one that embraces the principle of <strong>Barakah</strong> (blessing and prosperity through ethical conduct) in every engagement.</p>
-              <p>Today, BTI combines the rigor and expertise of top-tier consulting with a commitment to integrity, transparency, and long-term partnership. We measure our success not just by deliverables, but by the lasting positive impact we create for our clients and their stakeholders.</p>
+          <div className="why-choose-grid">
+            <div className="why-choose-card" data-aos="fade-up">
+              <div className="why-choose-icon">
+                <i className="fas fa-handshake"></i>
+              </div>
+              <h3>Strategic Partner</h3>
+              <p>Strategic partner in shaping and executing business direction</p>
+            </div>
+            <div className="why-choose-card" data-aos="fade-up" data-aos-delay="100">
+              <div className="why-choose-icon">
+                <i className="fas fa-chart-line"></i>
+              </div>
+              <h3>Actionable Insights</h3>
+              <p>Translating insight into clear, decision-ready actions</p>
+            </div>
+            <div className="why-choose-card" data-aos="fade-up" data-aos-delay="200">
+              <div className="why-choose-icon">
+                <i className="fas fa-sync-alt"></i>
+              </div>
+              <h3>Transformation Enablement</h3>
+              <p>Enabling transformation through people, culture, and ways of working</p>
+            </div>
+            <div className="why-choose-card" data-aos="fade-up" data-aos-delay="300">
+              <div className="why-choose-icon">
+                <i className="fas fa-users"></i>
+              </div>
+              <h3>Talent Development</h3>
+              <p>Building talent and leadership capability for sustainable execution</p>
+            </div>
+            <div className="why-choose-card" data-aos="fade-up" data-aos-delay="400">
+              <div className="why-choose-icon">
+                <i className="fas fa-balance-scale"></i>
+              </div>
+              <h3>Trusted Facilitator</h3>
+              <p>A trusted, neutral facilitator for high-stakes strategic decisions</p>
             </div>
           </div>
         </div>
@@ -208,7 +238,7 @@ function Team() {
       <section className="cta-section">
         <div className="container">
           <div className="cta-content" data-aos="zoom-in">
-            <h2>Connect with Our Founders</h2>
+            <h2>Connect with Our Experts</h2>
             <p>Have a project in mind? Reach out directly to discuss how we can help transform your business.</p>
             <div className="cta-buttons">
               <a href="https://wa.me/6281234567890" className="btn btn-whatsapp btn-lg" target="_blank" rel="noopener noreferrer">

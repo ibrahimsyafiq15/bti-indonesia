@@ -10,11 +10,26 @@ function Home() {
   }, []);
 
   const clients = [
-    { name: 'Paragon Corp', abbr: 'PC' },
-    { name: 'AIA Group', abbr: 'AIA' },
-    { name: 'iWise Education', abbr: 'iWise' },
-    { name: 'BRI', abbr: 'BRI' },
-    { name: 'BTN Syariah', abbr: 'BTN' },
+    { 
+      name: 'Paragon Corp', 
+      logo: 'https://www.nicepng.com/png/full/350-3503846_paragon-technology-and-innovation-pt-logo-pt-paragon.png' 
+    },
+    { 
+      name: 'AIA Group', 
+      logo: 'https://iconlogovector.com/uploads/images/2025/03/lg-67e1394c648f0-AIA-Group.webp' 
+    },
+    { 
+      name: 'iWise Education', 
+      logo: 'https://iwise.id/wp-content/uploads/2023/07/logoIwise-copy.png' 
+    },
+    { 
+      name: 'BRI', 
+      logo: 'https://assets.zonalogo.com/finance/bri.co.id/logo-dark-1769386439379.svg' 
+    },
+    { 
+      name: 'BTN Syariah', 
+      logo: 'https://api.eksis.co.id/internal/uploads/1762140744691797993.png' 
+    },
   ];
 
   return (
@@ -47,63 +62,35 @@ function Home() {
         </div>
       </section>
 
-      {/* Our Clients Section */}
-      <section className="clients-section section-padding bg-light">
-        <div className="container">
-          <div className="section-header">
-            <span className="section-tag">Trusted By</span>
-            <h2 className="section-title">Our Clients</h2>
-            <p className="section-subtitle">Leading organizations that have partnered with us to achieve their business goals.</p>
-          </div>
-          <div className="clients-grid" data-aos="fade-up">
-            {clients.map((client, index) => (
-              <div key={index} className="client-card" data-aos="fade-up" data-aos-delay={index * 100}>
-                <div className="client-logo">
-                  <span className="client-abbr">{client.abbr}</span>
-                </div>
-                <span className="client-name">{client.name}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Value Proposition Section */}
+      {/* Value Proposition Section - Our Value */}
       <section className="values section-padding">
         <div className="container">
           <div className="section-header">
-            <span className="section-tag">Our Approach</span>
-            <h2 className="section-title">Why Choose BTI?</h2>
-            <p className="section-subtitle">We combine deep industry expertise with ethical business practices to deliver transformative results.</p>
+            <span className="section-tag">Our Value</span>
+            <h2 className="section-title">Evidence-Based Strategy</h2>
+            <p className="section-subtitle">We don&apos;t rely on assumptions, we work with evidence. Our approach is collaborative, structured, and practical—connecting strategic thinking into actionable execution.</p>
           </div>
           <div className="values-grid">
             <div className="value-card" data-aos="fade-up">
               <div className="value-icon">
-                <i className="fas fa-handshake"></i>
+                <i className="fas fa-bullseye"></i>
               </div>
-              <h3>Ethical Excellence</h3>
-              <p>Barakah-driven approach ensuring every recommendation aligns with integrity and sustainable value creation.</p>
+              <h3>What we do and how we create value</h3>
+              <p>Enabling better decisions through clarity, alignment, & data-driven insight.</p>
             </div>
             <div className="value-card" data-aos="fade-up" data-aos-delay="100">
               <div className="value-icon">
-                <i className="fas fa-rocket"></i>
+                <i className="fas fa-star"></i>
               </div>
-              <h3>Dynamic Innovation</h3>
-              <p>Cutting-edge strategies tailored for the modern corporate landscape, embracing digital transformation.</p>
+              <h3>How We Different</h3>
+              <p>Our approach is collaborative, structured, and practical – connecting the strategic thinking into actionable execution.</p>
             </div>
             <div className="value-card" data-aos="fade-up" data-aos-delay="200">
               <div className="value-icon">
-                <i className="fas fa-users"></i>
+                <i className="fas fa-rocket"></i>
               </div>
-              <h3>Expert Partnership</h3>
-              <p>Direct access to seasoned consultants with proven track records in Fortune 500 environments.</p>
-            </div>
-            <div className="value-card" data-aos="fade-up" data-aos-delay="300">
-              <div className="value-icon">
-                <i className="fas fa-chart-line"></i>
-              </div>
-              <h3>Measurable Impact</h3>
-              <p>Results-oriented methodology with clear KPIs and continuous performance tracking.</p>
+              <h3>Our Aspirations</h3>
+              <p>To provide the right insights, shape the right products, and prepare the right talents for the growth of Indonesia&apos;s Muslim consumer ecosystem.</p>
             </div>
           </div>
         </div>
@@ -156,7 +143,7 @@ function Home() {
       <section className="team-preview section-padding">
         <div className="container">
           <div className="section-header">
-            <span className="section-tag">Meet Our Team</span>
+            <span className="section-tag">Our Team</span>
             <h2 className="section-title">Meet Our Experts</h2>
             <p className="section-subtitle">Visionary leaders committed to transforming businesses with integrity and innovation.</p>
           </div>
@@ -210,12 +197,35 @@ function Home() {
         </div>
       </section>
 
+      {/* Our Clients Section */}
+      <section className="clients-section section-padding bg-light">
+        <div className="container">
+          <div className="section-header">
+            <span className="section-tag">Trusted By</span>
+            <h2 className="section-title">Our Clients</h2>
+            <p className="section-subtitle">Leading organizations that have partnered with us to achieve their business goals.</p>
+          </div>
+          <div className="clients-grid" data-aos="fade-up">
+            {clients.map((client, index) => (
+              <div key={index} className="client-logo-item" data-aos="fade-up" data-aos-delay={index * 100}>
+                <img 
+                  src={client.logo} 
+                  alt={client.name} 
+                  className="client-logo-img"
+                  title={client.name}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* CTA Section */}
       <section className="cta-section">
         <div className="container">
           <div className="cta-content" data-aos="zoom-in">
-            <h2>Let's work together.</h2>
-            <p>Let's discuss how BTI can help you achieve sustainable growth and operational excellence.</p>
+            <h2>Let&apos;s work together.</h2>
+            <p>Let&apos;s discuss how BTI can help you achieve sustainable growth and operational excellence.</p>
             <div className="cta-buttons">
               <a href="https://wa.me/6281234567890" className="btn btn-whatsapp btn-lg" target="_blank" rel="noopener noreferrer">
                 <i className="fab fa-whatsapp"></i>

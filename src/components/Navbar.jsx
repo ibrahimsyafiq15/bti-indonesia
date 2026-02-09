@@ -51,8 +51,9 @@ function Navbar() {
         </button>
         <ul className={`nav-menu ${isMobileMenuOpen ? 'active' : ''}`} id="navMenu">
           <li><Link to="/" className={`nav-link ${isActive('/')}`} onClick={closeMobileMenu}>Home</Link></li>
-          <li><Link to="/services" className={`nav-link ${isActive('/services')}`} onClick={closeMobileMenu}>Services</Link></li>
+          <li><Link to="/services" className={`nav-link ${isActive('/services')}`} onClick={closeMobileMenu}>Service</Link></li>
           <li><Link to="/team" className={`nav-link ${isActive('/team')}`} onClick={closeMobileMenu}>Our Team</Link></li>
+          <li><Link to="/insight" className={`nav-link ${isActive('/insight')}`} onClick={closeMobileMenu}>Insight</Link></li>
           <li><Link to="/contact" className={`nav-link ${isActive('/contact')}`} onClick={closeMobileMenu}>Contact</Link></li>
         </ul>
         <Link to="/contact" className="btn btn-primary nav-cta">Get in Touch</Link>
