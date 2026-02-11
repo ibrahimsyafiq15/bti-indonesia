@@ -755,7 +755,8 @@ p {
 
 /* CTA Section */
 .cta-section {
-    background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-light) 100%);
+    background: #111E48;
+    background: linear-gradient(90deg, rgba(17, 30, 72, 1) 20%, rgba(42, 61, 122, 1) 100%);
     padding: 100px 0;
     position: relative;
     overflow: hidden;
@@ -764,25 +765,15 @@ p {
 .cta-section::before {
     content: '';
     position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(3, 217, 103, 0.1) 0%, transparent 50%);
-}
-
-.cta-section::after {
-    content: '';
-    position: absolute;
     top: 0;
+    left: 0;
     right: 0;
     bottom: 0;
-    width: 50%;
-    background-image: url('/cta-bg-element.png');
-    background-position: right center;
+    background-image: url('/cta-bg.jpg');
+    background-position: 100%, 0 0;
     background-repeat: no-repeat;
-    background-size: contain;
-    opacity: 0.15;
+    background-size: 50%;
+    opacity: 0.3;
     pointer-events: none;
 }
 

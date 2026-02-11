@@ -4,15 +4,25 @@ import { useCompany } from '../contexts/CompanyContext';
 function Footer() {
   const { company, loading } = useCompany();
 
-  if (loading || !company) {
-    return (
-      <footer className="footer" style={{ padding: '80px 0' }}>
-        <div className="container" style={{ textAlign: 'center' }}>
-          <i className="fas fa-spinner fa-spin"></i>
-        </div>
-      </footer>
-    );
-  }
+  // Fallback data when API is not available
+  const fallbackData = {
+    name: 'BTI - Barakah Talenta Inspirasi',
+    description: 'A trusted strategic partner enabling organizations to make confident and impactful business decisions.',
+    address: {
+      fullAddress: 'Jakarta, Indonesia'
+    },
+    contact: {
+      email: 'contact@bti-indonesia.com',
+      phone: '+62 812 3456 7890',
+      whatsapp: '6281234567890'
+    },
+    socialMedia: {
+      linkedin: 'https://linkedin.com/company/bti'
+    },
+    footerLogo: '/logo-footer.png'
+  };
+
+  const data = company || fallbackData;
 
   const { 
     name, 
@@ -21,7 +31,7 @@ function Footer() {
     contact, 
     socialMedia, 
     footerLogo 
-  } = company;
+  } = data;
 
   return (
     <footer className="footer">

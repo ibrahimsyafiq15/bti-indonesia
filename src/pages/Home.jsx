@@ -150,43 +150,37 @@ function Home() {
           <div className="team-grid-preview">
             <div className="team-card-preview" data-aos="fade-up">
               <div className="team-image">
-                <div className="team-placeholder">
-                  <i className="fas fa-user"></i>
-                </div>
+                <img src="/team-banto.jpg" alt="Banto Twiseno" />
               </div>
               <div className="team-info">
                 <h3>Banto Twiseno</h3>
                 <p className="team-role">Insight Expert</p>
                 <div className="team-social">
-                  <a href="#" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i className="fab fa-linkedin"></i></a>
+                  <a href="https://www.linkedin.com/in/banto-twiseno-ba5b4041/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i className="fab fa-linkedin"></i></a>
                 </div>
               </div>
             </div>
             <div className="team-card-preview" data-aos="fade-up" data-aos-delay="100">
               <div className="team-image">
-                <div className="team-placeholder">
-                  <i className="fas fa-user"></i>
-                </div>
+                <img src="/team-tutus.jpg" alt="Tutus Widayanti" />
               </div>
               <div className="team-info">
                 <h3>Tutus Widayanti</h3>
                 <p className="team-role">Corporate Transformation & Change Management</p>
                 <div className="team-social">
-                  <a href="#" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i className="fab fa-linkedin"></i></a>
+                  <a href="https://www.linkedin.com/in/tutus-widayanti/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i className="fab fa-linkedin"></i></a>
                 </div>
               </div>
             </div>
             <div className="team-card-preview" data-aos="fade-up" data-aos-delay="200">
               <div className="team-image">
-                <div className="team-placeholder">
-                  <i className="fas fa-user"></i>
-                </div>
+                <img src="/team-putri.jpg" alt="Putri Novelia" />
               </div>
               <div className="team-info">
                 <h3>Putri Novelia</h3>
                 <p className="team-role">Organizational & People Advisor</p>
                 <div className="team-social">
-                  <a href="#" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i className="fab fa-linkedin"></i></a>
+                  <a href="https://www.linkedin.com/in/putri-novelia/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i className="fab fa-linkedin"></i></a>
                 </div>
               </div>
             </div>

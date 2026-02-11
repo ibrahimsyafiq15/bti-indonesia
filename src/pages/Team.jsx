@@ -33,12 +33,10 @@ function Team() {
             <div className="founder-grid">
               <div className="founder-image">
                 <div className="founder-photo">
-                  <div className="photo-placeholder">
-                    <i className="fas fa-user"></i>
-                  </div>
+                  <img src="/team-banto.jpg" alt="Banto Twiseno" />
                 </div>
                 <div className="founder-social">
-                  <a href="https://linkedin.com/in/banto-twiseno" target="_blank" rel="noopener noreferrer" className="linkedin-btn" aria-label="LinkedIn Profile">
+                  <a href="https://www.linkedin.com/in/banto-twiseno-ba5b4041/" target="_blank" rel="noopener noreferrer" className="linkedin-btn" aria-label="LinkedIn Profile">
                     <i className="fab fa-linkedin"></i>
                     <span>View LinkedIn Profile</span>
                   </a>
@@ -84,12 +82,10 @@ function Team() {
             <div className="founder-grid">
               <div className="founder-image">
                 <div className="founder-photo">
-                  <div className="photo-placeholder">
-                    <i className="fas fa-user"></i>
-                  </div>
+                  <img src="/team-tutus.jpg" alt="Tutus Widayanti" />
                 </div>
                 <div className="founder-social">
-                  <a href="https://linkedin.com/in/tutus-widayanti" target="_blank" rel="noopener noreferrer" className="linkedin-btn" aria-label="LinkedIn Profile">
+                  <a href="https://www.linkedin.com/in/tutus-widayanti/" target="_blank" rel="noopener noreferrer" className="linkedin-btn" aria-label="LinkedIn Profile">
                     <i className="fab fa-linkedin"></i>
                     <span>View LinkedIn Profile</span>
                   </a>
@@ -135,12 +131,10 @@ function Team() {
             <div className="founder-grid">
               <div className="founder-image">
                 <div className="founder-photo">
-                  <div className="photo-placeholder">
-                    <i className="fas fa-user"></i>
-                  </div>
+                  <img src="/team-putri.jpg" alt="Putri Novelia" />
                 </div>
                 <div className="founder-social">
-                  <a href="https://linkedin.com/in/putri-novelia" target="_blank" rel="noopener noreferrer" className="linkedin-btn" aria-label="LinkedIn Profile">
+                  <a href="https://www.linkedin.com/in/putri-novelia/" target="_blank" rel="noopener noreferrer" className="linkedin-btn" aria-label="LinkedIn Profile">
                     <i className="fab fa-linkedin"></i>
                     <span>View LinkedIn Profile</span>
                   </a>

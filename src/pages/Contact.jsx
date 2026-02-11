@@ -121,8 +121,8 @@ function Contact() {
                 </div>
                 <h3>Email</h3>
                 <p>Send us detailed project requirements or proposals.</p>
-                <a href="mailto:contact@bti.co.id" className="contact-link">
-                  contact@bti.co.id
+                <a href="mailto:contact@bti-indonesia.com" className="contact-link">
+                  contact@bti-indonesia.com
                   <i className="fas fa-external-link-alt"></i>
                 </a>
               </div>
@@ -248,50 +248,8 @@ function Contact() {
         </div>
       </section>
 
-      {/* Quick Response Section */}
-      <section className="quick-response section-padding bg-light">
-        <div className="container">
-          <div className="section-header">
-            <span className="section-tag">Response Time</span>
-            <h2 className="section-title">What to Expect</h2>
-          </div>
-          <div className="response-timeline">
-            <div className="timeline-item" data-aos="fade-up">
-              <div className="timeline-icon">
-                <i className="fas fa-paper-plane"></i>
-              </div>
-              <div className="timeline-content">
-                <h3>Initial Response</h3>
-                <span className="timeline-time">Within 24 hours</span>
-                <p>We acknowledge your inquiry and provide an initial assessment of how we can help.</p>
-              </div>
-            </div>
-            <div className="timeline-item" data-aos="fade-up" data-aos-delay="100">
-              <div className="timeline-icon">
-                <i className="fas fa-phone"></i>
-              </div>
-              <div className="timeline-content">
-                <h3>Discovery Call</h3>
-                <span className="timeline-time">Within 3-5 business days</span>
-                <p>A detailed discussion to understand your challenges, goals, and expectations.</p>
-              </div>
-            </div>
-            <div className="timeline-item" data-aos="fade-up" data-aos-delay="200">
-              <div className="timeline-icon">
-                <i className="fas fa-file-alt"></i>
-              </div>
-              <div className="timeline-content">
-                <h3>Proposal</h3>
-                <span className="timeline-time">Within 1 week</span>
-                <p>A tailored proposal outlining our approach, timeline, and investment.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* FAQ Section */}
-      <section className="faq-section section-padding">
+      <section className="faq-section section-padding bg-light" style={{ paddingBottom: '60px' }}>
         <div className="container">
           <div className="section-header">
             <span className="section-tag">FAQ</span>
@@ -299,40 +257,28 @@ function Contact() {
           </div>
           <div className="faq-grid">
             <div className="faq-item" data-aos="fade-up">
-              <h3><i className="fas fa-question-circle"></i> What industries do you serve?</h3>
-              <p>We work with clients across various industries including finance, technology, manufacturing, retail, and healthcare. Our methodologies are adaptable to different sectors and business models.</p>
+              <h3><i className="fas fa-question-circle"></i> What services does BTI offer?</h3>
+              <p>We offer three core services: Meaningful Insight (market research & consumer insights), Strategic Advisory (business transformation & strategic planning), and Talent Capability (leadership development & talent management).</p>
             </div>
             <div className="faq-item" data-aos="fade-up" data-aos-delay="100">
-              <h3><i className="fas fa-question-circle"></i> What is your typical engagement model?</h3>
-              <p>We offer flexible engagement models including project-based, retainer, and advisory arrangements. The best fit depends on your specific needs and the scope of work.</p>
+              <h3><i className="fas fa-question-circle"></i> What industries do you specialize in?</h3>
+              <p>We have extensive experience in FMCG, financial services, healthcare, technology, and retail. Our team brings 25+ years of experience from multinational corporations like Unilever, Prudential, and SHL Indonesia.</p>
             </div>
             <div className="faq-item" data-aos="fade-up" data-aos-delay="200">
-              <h3><i className="fas fa-question-circle"></i> How do you ensure confidentiality?</h3>
-              <p>We take confidentiality seriously. All engagements are covered by comprehensive NDAs, and our team is trained on data protection and information security protocols.</p>
+              <h3><i className="fas fa-question-circle"></i> How does BTI approach client engagements?</h3>
+              <p>We follow an evidence-based approach—collaborative, structured, and practical. We don't rely on assumptions; we work with data to enable better decisions through clarity, alignment, and insight.</p>
             </div>
             <div className="faq-item" data-aos="fade-up" data-aos-delay="300">
-              <h3><i className="fas fa-question-circle"></i> Do you work with startups?</h3>
-              <p>While our primary focus is on established corporations and growth-stage companies, we do selectively work with high-potential startups. Contact us to discuss your specific situation.</p>
+              <h3><i className="fas fa-question-circle"></i> Who are the experts at BTI?</h3>
+              <p>Our team consists of seasoned professionals: Banto Twiseno (Insight Expert, 25 years at Unilever), Tutus Widayanti (Corporate Transformation & Change Management, 25+ years experience), and Putri Novelia (Organizational & People Advisor).</p>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="cta-section">
-        <div className="container">
-          <div className="cta-content" data-aos="zoom-in">
-            <h2>Let's Start Your Transformation Journey</h2>
-            <p>Every successful partnership begins with a conversation. Reach out today.</p>
-            <div className="cta-buttons">
-              <a href="https://wa.me/6281234567890" className="btn btn-whatsapp btn-lg" target="_blank" rel="noopener noreferrer">
-                <i className="fab fa-whatsapp"></i>
-                Chat on WhatsApp
-              </a>
-              <a href="mailto:contact@bti.co.id" className="btn btn-outline-light btn-lg">
-                <i className="fas fa-envelope"></i>
-                Send Email
-              </a>
+            <div className="faq-item" data-aos="fade-up" data-aos-delay="400">
+              <h3><i className="fas fa-question-circle"></i> What is your typical response time?</h3>
+              <p>We respond to inquiries within 24 hours. For project proposals, we typically provide a tailored approach within one week after understanding your specific needs and challenges.</p>
+            </div>
+            <div className="faq-item" data-aos="fade-up" data-aos-delay="500">
+              <h3><i className="fas fa-question-circle"></i> How can I get started with BTI?</h3>
+              <p>Simply reach out via WhatsApp, email, or our contact form. We'll schedule an initial consultation to understand your needs and discuss how we can help transform your business.</p>
             </div>
           </div>
         </div>

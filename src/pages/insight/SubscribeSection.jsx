@@ -38,18 +38,23 @@ function SubscribeSection() {
   return (
     <section className="subscribe-section" style={{
       padding: '80px 0',
-      background: 'linear-gradient(135deg, var(--secondary) 0%, var(--secondary-light) 100%)',
+      background: '#111E48',
+      backgroundImage: 'linear-gradient(90deg, rgba(17, 30, 72, 1) 20%, rgba(42, 61, 122, 1) 100%)',
       position: 'relative',
       overflow: 'hidden'
     }}>
-      {/* Background Pattern */}
+      {/* Background Image */}
       <div style={{
         position: 'absolute',
         top: 0,
         left: 0,
         right: 0,
         bottom: 0,
-        background: 'radial-gradient(circle at 20% 80%, rgba(3, 217, 103, 0.1) 0%, transparent 50%)',
+        backgroundImage: 'url(/cta-bg.jpg)',
+        backgroundPosition: '100%, 0 0',
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: '50%',
+        opacity: 0.3,
         pointerEvents: 'none'
       }}></div>
       
