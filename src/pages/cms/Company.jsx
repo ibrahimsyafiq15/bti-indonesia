@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { companyAPI } from '../../services/api';
+import SuccessModal from '../../components/SuccessModal';
 
 function Company() {
   const [formData, setFormData] = useState({
@@ -33,6 +34,7 @@ function Company() {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState(null);
+  const [successModal, setSuccessModal] = useState({ isOpen: false, title: '', message: '' });
 
   useEffect(() => {
     loadCompany();
@@ -42,10 +44,12 @@ function Company() {
     try {
       setLoading(true);
       setError(null);
+      console.log('[Company] Loading company data...');
       const data = await companyAPI.getCompany();
+      console.log('[Company] Data received:', data);
       
       // Safely set data with fallbacks
-      setFormData({
+      const mappedFormData = {
         name: data?.name || 'Barakah Talenta Inspirasi',
         description: data?.description || '',
         metaDescription: data?.metaDescription || '',
@@ -69,12 +73,16 @@ function Company() {
         },
         logo: null,
         footerLogo: null
-      });
+      };
+      
+      console.log('[Company] Mapped form data:', mappedFormData);
+      setFormData(mappedFormData);
       
       if (data?.logo) setLogoPreview(data.logo);
       if (data?.footerLogo) setFooterLogoPreview(data.footerLogo);
     } catch (error) {
-      console.error('Failed to load company data:', error);
+      console.error('[Company] Error loading company data:', error);
+      console.error('[Company] Error details:', error.message, error.stack);
       setError('Failed to load data. Please try again.');
     } finally {
       setLoading(false);
@@ -123,6 +131,11 @@ function Company() {
       setError(null);
       await companyAPI.updateCompany(formData);
       setSaved(true);
+      setSuccessModal({
+        isOpen: true,
+        title: 'Success',
+        message: 'Company details saved successfully!'
+      });
       setTimeout(() => setSaved(false), 3000);
     } catch (error) {
       console.error('Save error:', error);
@@ -134,15 +147,15 @@ function Company() {
 
   if (loading) {
     return (
-      <div style={{ textAlign: 'center', padding: '60px' }}>
+      <div style={{ textAlign: 'center', padding: '60px', fontFamily: "'Inter', sans-serif" }}>
         <i className="fas fa-spinner fa-spin" style={{ fontSize: '2rem', color: '#03D967' }}></i>
-        <p>Loading company data...</p>
+        <p style={{ fontFamily: "'Inter', sans-serif" }}>Loading company data...</p>
       </div>
     );
   }
 
   return (
-    <div className="cms-company">
+    <div className="cms-company" style={{ fontFamily: "'Inter', sans-serif" }}>
       <div style={{
         display: 'flex',
         justifyContent: 'space-between',
@@ -150,23 +163,12 @@ function Company() {
         marginBottom: '24px'
       }}>
         <div>
-          <h2 style={{ fontSize: '1.5rem', margin: 0 }}>Company Details</h2>
-          <p style={{ margin: '4px 0 0', color: '#6b6b7b', fontSize: '0.9rem' }}>
+          <h2 style={{ fontSize: '1.5rem', margin: 0, fontFamily: "'Inter', sans-serif" }}>Company Details</h2>
+          <p style={{ margin: '4px 0 0', color: '#6b6b7b', fontSize: '0.9rem', fontFamily: "'Inter', sans-serif" }}>
             Manage your company information displayed across the website
           </p>
         </div>
-        {saved && (
-          <span style={{
-            padding: '8px 16px',
-            background: 'rgba(3, 217, 103, 0.1)',
-            color: '#02b555',
-            borderRadius: '8px',
-            fontSize: '0.9rem'
-          }}>
-            <i className="fas fa-check-circle" style={{ marginRight: '6px' }}></i>
-            Saved successfully!
-          </span>
-        )}
+
       </div>
 
       {error && (
@@ -175,14 +177,15 @@ function Company() {
           background: '#ffebee',
           color: '#c0392b',
           borderRadius: '8px',
-          marginBottom: '20px'
+          marginBottom: '20px',
+          fontFamily: "'Inter', sans-serif"
         }}>
           <i className="fas fa-exclamation-circle" style={{ marginRight: '8px' }}></i>
           {error}
         </div>
       )}
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} style={{ fontFamily: "'Inter', sans-serif" }}>
         <div style={{
           display: 'grid',
           gridTemplateColumns: '2fr 1fr',
@@ -196,10 +199,10 @@ function Company() {
               padding: '24px',
               marginBottom: '20px'
             }}>
-              <h3 style={{ fontSize: '1rem', marginBottom: '16px' }}>Basic Information</h3>
+              <h3 style={{ fontSize: '1rem', marginBottom: '16px', fontFamily: "'Inter', sans-serif" }}>Basic Information</h3>
               
               <div style={{ marginBottom: '16px' }}>
-                <label style={{ display: 'block', marginBottom: '8px' }}>Company Name *</label>
+                <label style={{ display: 'block', marginBottom: '8px', fontFamily: "'Inter', sans-serif" }}>Company Name *</label>
                 <input
                   type="text"
                   name="name"
@@ -210,13 +213,14 @@ function Company() {
                     width: '100%',
                     padding: '10px 12px',
                     border: '1px solid #e8e8f0',
-                    borderRadius: '6px'
+                    borderRadius: '6px',
+                    fontFamily: "'Inter', sans-serif"
                   }}
                 />
               </div>
 
               <div style={{ marginBottom: '16px' }}>
-                <label style={{ display: 'block', marginBottom: '8px' }}>
+                <label style={{ display: 'block', marginBottom: '8px', fontFamily: "'Inter', sans-serif" }}>
                   Description * 
                   <small style={{ color: '#6b6b7b' }}> (Shown in footer)</small>
                 </label>
@@ -231,13 +235,15 @@ function Company() {
                     padding: '10px 12px',
                     border: '1px solid #e8e8f0',
                     borderRadius: '6px',
-                    resize: 'vertical'
+                    resize: 'vertical',
+                    fontFamily: "'Inter', sans-serif",
+                    fontSize: '0.95rem'
                   }}
                 />
               </div>
 
               <div>
-                <label style={{ display: 'block', marginBottom: '8px' }}>
+                <label style={{ display: 'block', marginBottom: '8px', fontFamily: "'Inter', sans-serif" }}>
                   Meta Description 
                   <small style={{ color: '#6b6b7b' }}> (For SEO)</small>
                 </label>
@@ -252,10 +258,11 @@ function Company() {
                     padding: '10px 12px',
                     border: '1px solid #e8e8f0',
                     borderRadius: '6px',
-                    resize: 'vertical'
+                    resize: 'vertical',
+                    fontFamily: "'Inter', sans-serif"
                   }}
                 />
-                <small style={{ color: '#6b6b7b' }}>{(formData.metaDescription || '').length}/160</small>
+                <small style={{ color: '#6b6b7b', fontFamily: "'Inter', sans-serif" }}>{(formData.metaDescription || '').length}/160</small>
               </div>
             </div>
 
@@ -266,10 +273,10 @@ function Company() {
               padding: '24px',
               marginBottom: '20px'
             }}>
-              <h3 style={{ fontSize: '1rem', marginBottom: '16px' }}>Address</h3>
+              <h3 style={{ fontSize: '1rem', marginBottom: '16px', fontFamily: "'Inter', sans-serif" }}>Address</h3>
               
               <div style={{ marginBottom: '16px' }}>
-                <label style={{ display: 'block', marginBottom: '8px' }}>Full Address *</label>
+                <label style={{ display: 'block', marginBottom: '8px', fontFamily: "'Inter', sans-serif" }}>Full Address *</label>
                 <input
                   type="text"
                   value={formData.address?.fullAddress || ''}
@@ -286,7 +293,7 @@ function Company() {
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
                 <div>
-                  <label style={{ display: 'block', marginBottom: '8px' }}>City</label>
+                  <label style={{ display: 'block', marginBottom: '8px', fontFamily: "'Inter', sans-serif" }}>City</label>
                   <input
                     type="text"
                     value={formData.address?.city || ''}
@@ -300,7 +307,7 @@ function Company() {
                   />
                 </div>
                 <div>
-                  <label style={{ display: 'block', marginBottom: '8px' }}>Country</label>
+                  <label style={{ display: 'block', marginBottom: '8px', fontFamily: "'Inter', sans-serif" }}>Country</label>
                   <input
                     type="text"
                     value={formData.address?.country || ''}
@@ -322,11 +329,11 @@ function Company() {
               borderRadius: '12px',
               padding: '24px'
             }}>
-              <h3 style={{ fontSize: '1rem', marginBottom: '16px' }}>Contact Information</h3>
+              <h3 style={{ fontSize: '1rem', marginBottom: '16px', fontFamily: "'Inter', sans-serif" }}>Contact Information</h3>
               
               <div style={{ display: 'grid', gap: '16px' }}>
                 <div>
-                  <label style={{ display: 'block', marginBottom: '8px' }}>Email *</label>
+                  <label style={{ display: 'block', marginBottom: '8px', fontFamily: "'Inter', sans-serif" }}>Email *</label>
                   <input
                     type="email"
                     value={formData.contact?.email || ''}
@@ -341,7 +348,7 @@ function Company() {
                   />
                 </div>
                 <div>
-                  <label style={{ display: 'block', marginBottom: '8px' }}>Phone</label>
+                  <label style={{ display: 'block', marginBottom: '8px', fontFamily: "'Inter', sans-serif" }}>Phone</label>
                   <input
                     type="text"
                     value={formData.contact?.phone || ''}
@@ -355,7 +362,7 @@ function Company() {
                   />
                 </div>
                 <div>
-                  <label style={{ display: 'block', marginBottom: '8px' }}>WhatsApp Number</label>
+                  <label style={{ display: 'block', marginBottom: '8px', fontFamily: "'Inter', sans-serif" }}>WhatsApp Number</label>
                   <input
                     type="text"
                     value={formData.contact?.whatsapp || ''}
@@ -381,10 +388,10 @@ function Company() {
               padding: '24px',
               marginBottom: '20px'
             }}>
-              <h3 style={{ fontSize: '1rem', marginBottom: '16px' }}>Logos</h3>
+              <h3 style={{ fontSize: '1rem', marginBottom: '16px', fontFamily: "'Inter', sans-serif" }}>Logos</h3>
               
               <div style={{ marginBottom: '20px' }}>
-                <label style={{ display: 'block', marginBottom: '8px' }}>Header Logo</label>
+                <label style={{ display: 'block', marginBottom: '8px', fontFamily: "'Inter', sans-serif" }}>Header Logo</label>
                 <input
                   type="file"
                   accept="image/*"
@@ -408,14 +415,14 @@ function Company() {
                   {!logoPreview && (
                     <>
                       <i className="fas fa-cloud-upload-alt" style={{ fontSize: '1.5rem', color: '#9a9aaa' }}></i>
-                      <p style={{ margin: '8px 0 0', fontSize: '0.85rem', color: '#6b6b7b' }}>Upload logo</p>
+                      <p style={{ margin: '8px 0 0', fontSize: '0.85rem', color: '#6b6b7b', fontFamily: "'Inter', sans-serif" }}>Upload logo</p>
                     </>
                   )}
                 </label>
               </div>
 
               <div>
-                <label style={{ display: 'block', marginBottom: '8px' }}>Footer Logo</label>
+                <label style={{ display: 'block', marginBottom: '8px', fontFamily: "'Inter', sans-serif" }}>Footer Logo</label>
                 <input
                   type="file"
                   accept="image/*"
@@ -439,7 +446,7 @@ function Company() {
                   {!footerLogoPreview && (
                     <>
                       <i className="fas fa-cloud-upload-alt" style={{ fontSize: '1.5rem', color: '#9a9aaa' }}></i>
-                      <p style={{ margin: '8px 0 0', fontSize: '0.85rem', color: '#6b6b7b' }}>Upload footer logo</p>
+                      <p style={{ margin: '8px 0 0', fontSize: '0.85rem', color: '#6b6b7b', fontFamily: "'Inter', sans-serif" }}>Upload footer logo</p>
                     </>
                   )}
                 </label>
@@ -452,7 +459,7 @@ function Company() {
               borderRadius: '12px',
               padding: '24px'
             }}>
-              <h3 style={{ fontSize: '1rem', marginBottom: '16px' }}>Social Media</h3>
+              <h3 style={{ fontSize: '1rem', marginBottom: '16px', fontFamily: "'Inter', sans-serif" }}>Social Media</h3>
               
               <div style={{ display: 'grid', gap: '12px' }}>
                 {[
@@ -463,7 +470,7 @@ function Company() {
                   { key: 'twitter', icon: 'fab fa-twitter', label: 'X (Twitter)' }
                 ].map(({ key, icon, label }) => (
                   <div key={key}>
-                    <label style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '6px', fontSize: '0.9rem' }}>
+                    <label style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '6px', fontSize: '0.9rem', fontFamily: "'Inter', sans-serif" }}>
                       <i className={icon}></i> {label}
                     </label>
                     <input
@@ -492,7 +499,8 @@ function Company() {
           justifyContent: 'flex-end',
           marginTop: '24px',
           paddingTop: '24px',
-          borderTop: '1px solid #e8e8f0'
+          borderTop: '1px solid #e8e8f0',
+          fontFamily: "'Inter', sans-serif"
         }}>
           <button
             type="submit"
@@ -507,6 +515,14 @@ function Company() {
           </button>
         </div>
       </form>
+
+      {/* Success Modal */}
+      <SuccessModal
+        isOpen={successModal.isOpen}
+        onClose={() => setSuccessModal({ isOpen: false, title: '', message: '' })}
+        title={successModal.title}
+        message={successModal.message}
+      />
     </div>
   );
 }

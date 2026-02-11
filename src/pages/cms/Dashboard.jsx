@@ -77,8 +77,8 @@ function Dashboard() {
   ];
 
   return (
-    <div className="cms-dashboard">
-      <h2 style={{ marginBottom: '24px', fontSize: '1.5rem' }}>Dashboard</h2>
+    <div className="cms-dashboard" style={{ fontFamily: "'Inter', sans-serif" }}>
+      <h2 style={{ marginBottom: '24px', fontSize: '1.5rem', fontFamily: "'Inter', sans-serif" }}>Dashboard</h2>
       
       {/* Stats Grid */}
       <div className="stats-grid" style={{
@@ -149,7 +149,7 @@ function Dashboard() {
         padding: '24px',
         marginBottom: '32px'
       }}>
-        <h3 style={{ marginBottom: '16px', fontSize: '1.1rem' }}>Quick Actions</h3>
+        <h3 style={{ marginBottom: '16px', fontSize: '1.1rem', fontFamily: "'Inter', sans-serif" }}>Quick Actions</h3>
         <div style={{
           display: 'flex',
           gap: '12px',
@@ -182,20 +182,21 @@ function Dashboard() {
           alignItems: 'center',
           marginBottom: '20px'
         }}>
-          <h3 style={{ fontSize: '1.1rem', margin: 0 }}>Recent Articles</h3>
+          <h3 style={{ fontSize: '1.1rem', margin: 0, fontFamily: "'Inter', sans-serif" }}>Recent Articles</h3>
           <Link to="/cms/articles" style={{
             color: '#03D967',
             textDecoration: 'none',
-            fontSize: '0.9rem'
+            fontSize: '0.9rem',
+            fontFamily: "'Inter', sans-serif"
           }}>
             View All <i className="fas fa-arrow-right" style={{ marginLeft: '4px' }}></i>
           </Link>
         </div>
 
         {loading ? (
-          <p>Loading...</p>
+          <p style={{ fontFamily: "'Inter', sans-serif" }}>Loading...</p>
         ) : recentArticles.length === 0 ? (
-          <p style={{ color: '#6b6b7b' }}>No articles yet.</p>
+          <p style={{ color: '#6b6b7b', fontFamily: "'Inter', sans-serif" }}>No articles yet.</p>
         ) : (
           <table style={{
             width: '100%',
@@ -203,10 +204,10 @@ function Dashboard() {
           }}>
             <thead>
               <tr style={{ borderBottom: '1px solid #e8e8f0' }}>
-                <th style={{ textAlign: 'left', padding: '12px', fontSize: '0.85rem', color: '#6b6b7b', fontWeight: '600' }}>Title</th>
-                <th style={{ textAlign: 'left', padding: '12px', fontSize: '0.85rem', color: '#6b6b7b', fontWeight: '600' }}>Category</th>
-                <th style={{ textAlign: 'left', padding: '12px', fontSize: '0.85rem', color: '#6b6b7b', fontWeight: '600' }}>Status</th>
-                <th style={{ textAlign: 'left', padding: '12px', fontSize: '0.85rem', color: '#6b6b7b', fontWeight: '600' }}>Date</th>
+                <th style={{ textAlign: 'left', padding: '12px', fontSize: '0.85rem', color: '#6b6b7b', fontWeight: '600', fontFamily: "'Inter', sans-serif" }}>Title</th>
+                <th style={{ textAlign: 'left', padding: '12px', fontSize: '0.85rem', color: '#6b6b7b', fontWeight: '600', fontFamily: "'Inter', sans-serif" }}>Category</th>
+                <th style={{ textAlign: 'left', padding: '12px', fontSize: '0.85rem', color: '#6b6b7b', fontWeight: '600', fontFamily: "'Inter', sans-serif" }}>Status</th>
+                <th style={{ textAlign: 'left', padding: '12px', fontSize: '0.85rem', color: '#6b6b7b', fontWeight: '600', fontFamily: "'Inter', sans-serif" }}>Date</th>
               </tr>
             </thead>
             <tbody>
@@ -216,7 +217,8 @@ function Dashboard() {
                     <Link to={`/cms/articles/edit/${article._id}`} style={{
                       color: '#1a1a2e',
                       textDecoration: 'none',
-                      fontWeight: '500'
+                      fontWeight: '500',
+                      fontFamily: "'Inter', sans-serif"
                     }}>
                       {article.title}
                     </Link>
@@ -226,7 +228,8 @@ function Dashboard() {
                       padding: '4px 10px',
                       background: '#f0f2f5',
                       borderRadius: '12px',
-                      fontSize: '0.8rem'
+                      fontSize: '0.8rem',
+                      fontFamily: "'Inter', sans-serif"
                     }}>{article.category}</span>
                   </td>
                   <td style={{ padding: '12px' }}>
@@ -237,12 +240,13 @@ function Dashboard() {
                       background: article.status === 'published' ? 'rgba(3, 217, 103, 0.1)' : 
                                  article.status === 'draft' ? 'rgba(243, 156, 18, 0.1)' : 'rgba(231, 76, 60, 0.1)',
                       color: article.status === 'published' ? '#02b555' : 
-                             article.status === 'draft' ? '#d68910' : '#c0392b'
+                             article.status === 'draft' ? '#d68910' : '#c0392b',
+                      fontFamily: "'Inter', sans-serif"
                     }}>
                       {article.status}
                     </span>
                   </td>
-                  <td style={{ padding: '12px', fontSize: '0.9rem', color: '#6b6b7b' }}>
+                  <td style={{ padding: '12px', fontSize: '0.9rem', color: '#6b6b7b', fontFamily: "'Inter', sans-serif" }}>
                     {new Date(article.createdAt).toLocaleDateString()}
                   </td>
                 </tr>

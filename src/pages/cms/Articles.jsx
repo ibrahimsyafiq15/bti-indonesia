@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { articleAPI } from '../../services/api';
+import SuccessModal from '../../components/SuccessModal';
+import ConfirmModal from '../../components/ConfirmModal';
 
 function Articles() {
   const [articles, setArticles] = useState([]);
@@ -14,6 +16,8 @@ function Articles() {
     totalPages: 1,
     total: 0
   });
+  const [successModal, setSuccessModal] = useState({ isOpen: false, title: '', message: '' });
+  const [confirmModal, setConfirmModal] = useState({ isOpen: false, articleId: null });
 
   const navigate = useNavigate();
 
@@ -29,25 +33,56 @@ function Articles() {
         limit: 10,
         ...filter
       };
+      console.log('[Articles] Loading articles with params:', params);
       const data = await articleAPI.getArticles(params);
-      setArticles(data.articles);
+      console.log('[Articles] Data received:', data);
+      
+      // Map snake_case to camelCase
+      const mappedArticles = data.articles.map(article => ({
+        _id: article.id,
+        title: article.title,
+        slug: article.slug,
+        content: article.content,
+        excerpt: article.excerpt,
+        category: article.category,
+        author: article.author,
+        status: article.status,
+        featuredImage: article.featured_image,
+        createdAt: article.created_at,
+        updatedAt: article.updated_at,
+        publishedAt: article.published_at,
+        views: article.views,
+        tags: article.tags || []
+      }));
+      
+      console.log('[Articles] Mapped articles:', mappedArticles);
+      setArticles(mappedArticles);
       setPagination({
         currentPage: parseInt(data.currentPage),
         totalPages: data.totalPages,
         total: data.total
       });
     } catch (error) {
-      console.error('Failed to load articles:', error);
+      console.error('[Articles] Error loading articles:', error);
+      console.error('[Articles] Error details:', error.message, error.stack);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleDelete = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this article?')) return;
-    
+  const handleDelete = (id) => {
+    setConfirmModal({ isOpen: true, articleId: id });
+  };
+
+  const confirmDelete = async () => {
     try {
-      await articleAPI.deleteArticle(id);
+      await articleAPI.deleteArticle(confirmModal.articleId);
+      setConfirmModal({ isOpen: false, articleId: null });
+      setSuccessModal({
+        isOpen: true,
+        title: 'Success',
+        message: 'Article deleted successfully!'
+      });
       loadArticles();
     } catch (error) {
       alert('Failed to delete article: ' + error.message);
@@ -70,7 +105,8 @@ function Articles() {
         fontWeight: '500',
         background: style.bg,
         color: style.color,
-        textTransform: 'capitalize'
+        textTransform: 'capitalize',
+        fontFamily: "'Inter', sans-serif"
       }}>
         {status}
       </span>
@@ -84,9 +120,10 @@ function Articles() {
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: '24px'
+        marginBottom: '24px',
+        fontFamily: "'Inter', sans-serif"
       }}>
-        <h2 style={{ fontSize: '1.5rem', margin: 0 }}>Articles</h2>
+        <h2 style={{ fontSize: '1.5rem', margin: 0, fontFamily: "'Inter', sans-serif" }}>Articles</h2>
         <Link to="/cms/articles/new" className="btn btn-primary">
           <i className="fas fa-plus" style={{ marginRight: '8px' }}></i>
           New Article
@@ -102,7 +139,8 @@ function Articles() {
         display: 'flex',
         gap: '16px',
         flexWrap: 'wrap',
-        alignItems: 'center'
+        alignItems: 'center',
+        fontFamily: "'Inter', sans-serif"
       }}>
         <input
           type="text"
@@ -116,7 +154,8 @@ function Articles() {
             border: '1px solid #e8e8f0',
             borderRadius: '8px',
             fontSize: '0.95rem',
-            outline: 'none'
+            outline: 'none',
+            fontFamily: "'Inter', sans-serif"
           }}
         />
         <select
@@ -128,7 +167,8 @@ function Articles() {
             borderRadius: '8px',
             fontSize: '0.95rem',
             outline: 'none',
-            background: 'white'
+            background: 'white',
+            fontFamily: "'Inter', sans-serif"
           }}
         >
           <option value="">All Status</option>
@@ -152,16 +192,17 @@ function Articles() {
         background: 'white',
         borderRadius: '12px',
         overflow: 'hidden',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.06)'
+        boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
+        fontFamily: "'Inter', sans-serif"
       }}>
         {loading ? (
-          <div style={{ textAlign: 'center', padding: '60px' }}>
+          <div style={{ textAlign: 'center', padding: '60px', fontFamily: "'Inter', sans-serif" }}>
             <i className="fas fa-spinner fa-spin" style={{ fontSize: '2rem', color: '#03D967' }}></i>
           </div>
         ) : articles.length === 0 ? (
-          <div style={{ textAlign: 'center', padding: '60px' }}>
+          <div style={{ textAlign: 'center', padding: '60px', fontFamily: "'Inter', sans-serif" }}>
             <i className="fas fa-inbox" style={{ fontSize: '3rem', color: '#e8e8f0', marginBottom: '16px' }}></i>
-            <p>No articles found.</p>
+            <p style={{ fontFamily: "'Inter', sans-serif" }}>No articles found.</p>
             <Link to="/cms/articles/new" className="btn btn-primary" style={{ marginTop: '16px' }}>
               Create your first article
             </Link>
@@ -170,18 +211,18 @@ function Articles() {
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
               <tr style={{ background: '#f8f9fc' }}>
-                <th style={{ padding: '16px', textAlign: 'left', fontSize: '0.85rem', fontWeight: '600', color: '#6b6b7b' }}>Article</th>
-                <th style={{ padding: '16px', textAlign: 'left', fontSize: '0.85rem', fontWeight: '600', color: '#6b6b7b' }}>Author</th>
-                <th style={{ padding: '16px', textAlign: 'left', fontSize: '0.85rem', fontWeight: '600', color: '#6b6b7b' }}>Category</th>
-                <th style={{ padding: '16px', textAlign: 'left', fontSize: '0.85rem', fontWeight: '600', color: '#6b6b7b' }}>Status</th>
-                <th style={{ padding: '16px', textAlign: 'left', fontSize: '0.85rem', fontWeight: '600', color: '#6b6b7b' }}>Date</th>
-                <th style={{ padding: '16px', textAlign: 'center', fontSize: '0.85rem', fontWeight: '600', color: '#6b6b7b' }}>Actions</th>
+                <th style={{ padding: '16px', textAlign: 'left', fontSize: '0.85rem', fontWeight: '600', color: '#6b6b7b', fontFamily: "'Inter', sans-serif" }}>Article</th>
+                <th style={{ padding: '16px', textAlign: 'left', fontSize: '0.85rem', fontWeight: '600', color: '#6b6b7b', fontFamily: "'Inter', sans-serif" }}>Author</th>
+                <th style={{ padding: '16px', textAlign: 'left', fontSize: '0.85rem', fontWeight: '600', color: '#6b6b7b', fontFamily: "'Inter', sans-serif" }}>Category</th>
+                <th style={{ padding: '16px', textAlign: 'left', fontSize: '0.85rem', fontWeight: '600', color: '#6b6b7b', fontFamily: "'Inter', sans-serif" }}>Status</th>
+                <th style={{ padding: '16px', textAlign: 'left', fontSize: '0.85rem', fontWeight: '600', color: '#6b6b7b', fontFamily: "'Inter', sans-serif" }}>Date</th>
+                <th style={{ padding: '16px', textAlign: 'center', fontSize: '0.85rem', fontWeight: '600', color: '#6b6b7b', fontFamily: "'Inter', sans-serif" }}>Actions</th>
               </tr>
             </thead>
             <tbody>
-              {articles.map(article => (
-                <tr key={article._id} style={{ borderTop: '1px solid #f0f0f5' }}>
-                  <td style={{ padding: '16px' }}>
+              {articles.map((article, index) => (
+                <tr key={article.id || article._id || `article-${index}`} style={{ borderTop: '1px solid #f0f0f5' }}>
+                  <td style={{ padding: '16px', fontFamily: "'Inter', sans-serif" }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                       <div style={{
                         width: '48px',
@@ -197,35 +238,37 @@ function Articles() {
                         {!article.featuredImage && <i className="fas fa-image" style={{ color: '#9a9aaa' }}></i>}
                       </div>
                       <div>
-                        <p style={{ margin: 0, fontWeight: '500', color: '#1a1a2e' }}>{article.title}</p>
-                        <p style={{ margin: '4px 0 0', fontSize: '0.8rem', color: '#6b6b7b' }}>/{article.slug}</p>
+                        <p style={{ margin: 0, fontWeight: '500', color: '#1a1a2e', fontFamily: "'Inter', sans-serif" }}>{article.title}</p>
+                        <p style={{ margin: '4px 0 0', fontSize: '0.8rem', color: '#6b6b7b', fontFamily: "'Inter', sans-serif" }}>/{article.slug}</p>
                       </div>
                     </div>
                   </td>
-                  <td style={{ padding: '16px', fontSize: '0.9rem' }}>{article.author}</td>
-                  <td style={{ padding: '16px' }}>
+                  <td style={{ padding: '16px', fontSize: '0.9rem', fontFamily: "'Inter', sans-serif" }}>{article.author}</td>
+                  <td style={{ padding: '16px', fontFamily: "'Inter', sans-serif" }}>
                     <span style={{
                       padding: '4px 10px',
                       background: '#f0f2f5',
                       borderRadius: '12px',
-                      fontSize: '0.8rem'
+                      fontSize: '0.8rem',
+                      fontFamily: "'Inter', sans-serif"
                     }}>{article.category}</span>
                   </td>
-                  <td style={{ padding: '16px' }}>{getStatusBadge(article.status)}</td>
-                  <td style={{ padding: '16px', fontSize: '0.9rem', color: '#6b6b7b' }}>
+                  <td style={{ padding: '16px', fontFamily: "'Inter', sans-serif" }}>{getStatusBadge(article.status)}</td>
+                  <td style={{ padding: '16px', fontSize: '0.9rem', color: '#6b6b7b', fontFamily: "'Inter', sans-serif" }}>
                     {new Date(article.createdAt).toLocaleDateString()}
                   </td>
-                  <td style={{ padding: '16px', textAlign: 'center' }}>
+                  <td style={{ padding: '16px', textAlign: 'center', fontFamily: "'Inter', sans-serif" }}>
                     <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
                       <button
-                        onClick={() => navigate(`/cms/articles/edit/${article._id}`)}
+                        onClick={() => navigate(`/cms/articles/edit/${article.id || article._id}`)}
                         style={{
                           padding: '8px 12px',
                           background: '#f0f2f5',
                           border: 'none',
                           borderRadius: '6px',
                           cursor: 'pointer',
-                          color: '#1a1a2e'
+                          color: '#1a1a2e',
+                          fontFamily: "'Inter', sans-serif"
                         }}
                         title="Edit"
                       >
@@ -242,21 +285,23 @@ function Articles() {
                           borderRadius: '6px',
                           cursor: 'pointer',
                           color: '#02b555',
-                          textDecoration: 'none'
+                          textDecoration: 'none',
+                          fontFamily: "'Inter', sans-serif"
                         }}
                         title="View"
                       >
                         <i className="fas fa-eye"></i>
                       </a>
                       <button
-                        onClick={() => handleDelete(article._id)}
+                        onClick={() => handleDelete(article.id || article._id)}
                         style={{
                           padding: '8px 12px',
                           background: '#ffebee',
                           border: 'none',
                           borderRadius: '6px',
                           cursor: 'pointer',
-                          color: '#c0392b'
+                          color: '#c0392b',
+                          fontFamily: "'Inter', sans-serif"
                         }}
                         title="Delete"
                       >
@@ -277,9 +322,10 @@ function Articles() {
             borderTop: '1px solid #f0f0f5',
             display: 'flex',
             justifyContent: 'space-between',
-            alignItems: 'center'
+            alignItems: 'center',
+            fontFamily: "'Inter', sans-serif"
           }}>
-            <span style={{ fontSize: '0.9rem', color: '#6b6b7b' }}>
+            <span style={{ fontSize: '0.9rem', color: '#6b6b7b', fontFamily: "'Inter', sans-serif" }}>
               Showing {articles.length} of {pagination.total} articles
             </span>
             <div style={{ display: 'flex', gap: '8px' }}>
@@ -294,7 +340,8 @@ function Articles() {
                 display: 'flex', 
                 alignItems: 'center', 
                 padding: '0 12px',
-                fontSize: '0.9rem'
+                fontSize: '0.9rem',
+                fontFamily: "'Inter', sans-serif"
               }}>
                 Page {pagination.currentPage} of {pagination.totalPages}
               </span>
@@ -309,6 +356,23 @@ function Articles() {
           </div>
         )}
       </div>
+
+      {/* Success Modal */}
+      <SuccessModal
+        isOpen={successModal.isOpen}
+        onClose={() => setSuccessModal({ isOpen: false, title: '', message: '' })}
+        title={successModal.title}
+        message={successModal.message}
+      />
+
+      {/* Confirm Modal */}
+      <ConfirmModal
+        isOpen={confirmModal.isOpen}
+        onClose={() => setConfirmModal({ isOpen: false, articleId: null })}
+        onConfirm={confirmDelete}
+        title="Confirm Delete"
+        message="Are you sure you want to delete this article?"
+      />
     </div>
   );
 }

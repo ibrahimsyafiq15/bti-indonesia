@@ -1,8 +1,13 @@
-import { useState } from 'react';
-import { Link, NavLink, Outlet } from 'react-router-dom';
+import { useState, useEffect, useRef } from 'react';
+import { Link, NavLink, Outlet, useNavigate, Navigate } from 'react-router-dom';
+import { useAuth } from '../../contexts/AuthContext';
 
 function CMSLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const { user, isAuthenticated, isLoading, logout } = useAuth();
+  const navigate = useNavigate();
+  const userMenuRef = useRef(null);
 
   const menuItems = [
     { path: '/cms', icon: 'fas fa-tachometer-alt', label: 'Dashboard' },
@@ -11,6 +16,49 @@ function CMSLayout() {
     { path: '/cms/company', icon: 'fas fa-building', label: 'Company' },
     { path: '/cms/subscriptions', icon: 'fas fa-envelope', label: 'Subscriptions' },
   ];
+
+  const handleLogout = () => {
+    logout();
+    setUserMenuOpen(false);
+    navigate('/cms/login', { replace: true });
+  };
+
+  // Close user menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
+        setUserMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Show loading state while checking authentication
+  if (isLoading) {
+    return (
+      <div style={{
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: '#f0f2f5'
+      }}>
+        <div style={{
+          textAlign: 'center',
+          color: '#666'
+        }}>
+          <i className="fas fa-spinner fa-spin" style={{ fontSize: '2rem', marginBottom: '16px' }}></i>
+          <p>Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Redirect to login if not authenticated
+  if (!isAuthenticated) {
+    return <Navigate to="/cms/login" replace />;
+  }
 
   return (
     <div className="cms-layout" style={{
@@ -40,9 +88,14 @@ function CMSLayout() {
           height: '70px'
         }}>
           <img 
-            src="/logo-footer.png" 
+            src={sidebarOpen ? "/logo-footer.png" : "/logo-icon.png"} 
             alt="BTI" 
-            style={{ height: '36px', width: 'auto' }}
+            style={{ 
+              height: sidebarOpen ? '36px' : '40px', 
+              width: 'auto',
+              objectFit: 'contain',
+              maxWidth: sidebarOpen ? 'none' : '40px'
+            }}
           />
           {sidebarOpen && (
             <span style={{
@@ -97,6 +150,7 @@ function CMSLayout() {
           padding: '16px',
           borderTop: '1px solid rgba(255,255,255,0.1)'
         }}>
+          {/* Collapse Button */}
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
             style={{
@@ -110,12 +164,15 @@ function CMSLayout() {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: '8px'
+              gap: '8px',
+              marginBottom: '8px'
             }}
           >
             <i className={`fas fa-chevron-${sidebarOpen ? 'left' : 'right'}`}></i>
             {sidebarOpen && <span>Collapse</span>}
           </button>
+          
+          {/* Logout Button - REMOVED, moved to user dropdown */}
           
           <Link
             to="/"
@@ -124,14 +181,13 @@ function CMSLayout() {
               alignItems: 'center',
               justifyContent: sidebarOpen ? 'flex-start' : 'center',
               padding: '10px',
-              marginTop: '8px',
               color: 'rgba(255,255,255,0.7)',
               textDecoration: 'none',
               fontSize: '0.9rem'
             }}
           >
-            <i className="fas fa-external-link-alt"></i>
-            {sidebarOpen && <span style={{ marginLeft: '10px' }}>View Website</span>}
+            <i className="fas fa-external-link-alt" style={{ width: '20px', textAlign: 'center' }}></i>
+            {sidebarOpen && <span style={{ marginLeft: '8px' }}>View Website</span>}
           </Link>
         </div>
       </aside>
@@ -162,30 +218,148 @@ function CMSLayout() {
             color: '#1a1a2e'
           }}>BTI Content Management</h1>
           
-          <div className="cms-header-actions" style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '16px'
-          }}>
-            <a 
-              href="http://localhost:5000" 
-              target="_blank" 
-              rel="noopener noreferrer"
+          {/* User Dropdown */}
+          <div 
+            ref={userMenuRef}
+            style={{ position: 'relative' }}
+          >
+            <button
+              onClick={() => setUserMenuOpen(!userMenuOpen)}
               style={{
-                padding: '8px 16px',
-                background: '#f0f2f5',
-                borderRadius: '6px',
-                color: '#1a1a2e',
-                textDecoration: 'none',
-                fontSize: '0.9rem',
                 display: 'flex',
                 alignItems: 'center',
-                gap: '6px'
+                gap: '12px',
+                padding: '6px 16px',
+                background: '#f0f2f5',
+                borderRadius: '8px',
+                border: 'none',
+                cursor: 'pointer',
+                fontFamily: "'Inter', sans-serif",
+                transition: 'background 0.2s'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = '#e8e8f0';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = '#f0f2f5';
               }}
             >
-              <i className="fas fa-server"></i>
-              API Status
-            </a>
+              <div style={{
+                width: '32px',
+                height: '32px',
+                borderRadius: '50%',
+                background: '#03D967',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: 'white',
+                fontWeight: '600',
+                fontSize: '0.9rem',
+                fontFamily: "'Inter', sans-serif"
+              }}>
+                {user?.name?.charAt(0)?.toUpperCase() || 'A'}
+              </div>
+              <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'flex-start'
+              }}>
+                <span style={{
+                  fontSize: '0.9rem',
+                  fontWeight: '500',
+                  color: '#1a1a2e',
+                  fontFamily: "'Inter', sans-serif"
+                }}>{user?.name || 'Administrator'}</span>
+                <span style={{
+                  fontSize: '0.75rem',
+                  color: '#6b7280',
+                  fontFamily: "'Inter', sans-serif"
+                }}>{user?.email || 'admin@bti.co.id'}</span>
+              </div>
+              <i 
+                className={`fas fa-chevron-${userMenuOpen ? 'up' : 'down'}`}
+                style={{ 
+                  fontSize: '0.75rem', 
+                  color: '#6b7280',
+                  marginLeft: '8px'
+                }}
+              ></i>
+            </button>
+
+            {/* Dropdown Menu */}
+            {userMenuOpen && (
+              <div style={{
+                position: 'absolute',
+                top: 'calc(100% + 8px)',
+                right: 0,
+                background: 'white',
+                borderRadius: '12px',
+                boxShadow: '0 10px 40px rgba(0,0,0,0.15)',
+                minWidth: '220px',
+                zIndex: 100,
+                overflow: 'hidden',
+                fontFamily: "'Inter', sans-serif"
+              }}>
+                {/* API Status */}
+                <a 
+                  href="http://localhost:5000" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '12px',
+                    padding: '14px 16px',
+                    color: '#1a1a2e',
+                    textDecoration: 'none',
+                    fontSize: '0.9rem',
+                    fontFamily: "'Inter', sans-serif",
+                    transition: 'background 0.2s',
+                    borderBottom: '1px solid #f0f0f5'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = '#f8f9fc';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = 'transparent';
+                  }}
+                >
+                  <i className="fas fa-server" style={{ color: '#03D967', width: '20px' }}></i>
+                  API Status
+                </a>
+
+                {/* Divider */}
+                <div style={{ height: '1px', background: '#f0f0f5' }}></div>
+
+                {/* Logout */}
+                <button
+                  onClick={handleLogout}
+                  style={{
+                    width: '100%',
+                    padding: '14px 16px',
+                    background: 'transparent',
+                    border: 'none',
+                    color: '#ef4444',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '12px',
+                    fontSize: '0.9rem',
+                    fontFamily: "'Inter', sans-serif",
+                    transition: 'background 0.2s'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = '#fef2f2';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = 'transparent';
+                  }}
+                >
+                  <i className="fas fa-sign-out-alt" style={{ width: '20px' }}></i>
+                  Logout
+                </button>
+              </div>
+            )}
           </div>
         </header>
 

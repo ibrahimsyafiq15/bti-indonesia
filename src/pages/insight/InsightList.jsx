@@ -25,12 +25,14 @@ function InsightList() {
   const loadArticles = async () => {
     try {
       setLoading(true);
+      console.log('[InsightList] Loading articles...');
       const params = {
         page: pagination.currentPage,
         limit: 9,
         ...filter
       };
       const data = await articleAPI.getPublicArticles(params);
+      console.log('[InsightList] Data received:', data);
       setArticles(data.articles);
       setPagination({
         currentPage: parseInt(data.currentPage),
@@ -38,7 +40,8 @@ function InsightList() {
         total: data.total
       });
     } catch (error) {
-      console.error('Failed to load articles:', error);
+      console.error('[InsightList] Error loading articles:', error);
+      console.error('[InsightList] Error message:', error.message);
     } finally {
       setLoading(false);
     }
@@ -131,8 +134,8 @@ function InsightList() {
                 gap: '30px',
                 marginBottom: '40px'
               }}>
-                {articles.map(article => (
-                  <article key={article._id} className="article-card" data-aos="fade-up">
+                {articles.map((article, index) => (
+                  <article key={article.id || article._id || `article-${index}`} className="article-card" data-aos="fade-up">
                     <Link to={`/insight/${article.slug}`} className="article-image-link">
                       <div className="article-image" style={{
                         height: '220px',

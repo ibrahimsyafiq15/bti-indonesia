@@ -155,8 +155,8 @@ function Home() {
                 </div>
               </div>
               <div className="team-info">
-                <h3>Founder Name 1</h3>
-                <p className="team-role">Chief Executive Officer</p>
+                <h3>Banto Twiseno</h3>
+                <p className="team-role">Insight Expert</p>
                 <div className="team-social">
                   <a href="#" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i className="fab fa-linkedin"></i></a>
                 </div>
@@ -169,8 +169,8 @@ function Home() {
                 </div>
               </div>
               <div className="team-info">
-                <h3>Founder Name 2</h3>
-                <p className="team-role">Chief Strategy Officer</p>
+                <h3>Tutus Widayanti</h3>
+                <p className="team-role">Corporate Transformation & Change Management</p>
                 <div className="team-social">
                   <a href="#" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i className="fab fa-linkedin"></i></a>
                 </div>
@@ -183,8 +183,8 @@ function Home() {
                 </div>
               </div>
               <div className="team-info">
-                <h3>Founder Name 3</h3>
-                <p className="team-role">Chief Operations Officer</p>
+                <h3>Putri Novelia</h3>
+                <p className="team-role">Organizational & People Advisor</p>
                 <div className="team-social">
                   <a href="#" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i className="fab fa-linkedin"></i></a>
                 </div>

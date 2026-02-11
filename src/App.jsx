@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { AuthProvider } from './contexts/AuthContext';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import BackToTop from './components/BackToTop';
@@ -13,6 +14,7 @@ import InsightDetail from './pages/insight/InsightDetail';
 
 // CMS Pages
 import CMSLayout from './pages/cms/CMSLayout';
+import Login from './pages/cms/Login';
 import Dashboard from './pages/cms/Dashboard';
 import Articles from './pages/cms/Articles';
 import ArticleForm from './pages/cms/ArticleForm';
@@ -26,43 +28,48 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 
 function App() {
   return (
-    <Router>
-      <div className="app">
-        <Routes>
-          {/* CMS Routes */}
-          <Route path="/cms/*" element={<CMSLayout />}>
-            <Route index element={<Dashboard />} />
-            <Route path="articles" element={<Articles />} />
-            <Route path="articles/new" element={<ArticleForm />} />
-            <Route path="articles/edit/:id" element={<ArticleForm />} />
-            <Route path="team" element={<TeamCMS />} />
-            <Route path="team/new" element={<TeamForm />} />
-            <Route path="team/edit/:id" element={<TeamForm />} />
-            <Route path="company" element={<Company />} />
-            <Route path="subscriptions" element={<Subscriptions />} />
-          </Route>
+    <AuthProvider>
+      <Router>
+        <div className="app">
+          <Routes>
+            {/* CMS Login Route - Outside of CMSLayout */}
+            <Route path="/cms/login" element={<Login />} />
 
-          {/* Public Routes */}
-          <Route path="*" element={
-            <>
-              <Navbar />
-              <main>
-                <Routes>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/services" element={<Services />} />
-                  <Route path="/team" element={<Team />} />
-                  <Route path="/contact" element={<Contact />} />
-                  <Route path="/insight" element={<InsightList />} />
-                  <Route path="/insight/:slug" element={<InsightDetail />} />
-                </Routes>
-              </main>
-              <Footer />
-              <BackToTop />
-            </>
-          } />
-        </Routes>
-      </div>
-    </Router>
+            {/* CMS Protected Routes */}
+            <Route path="/cms/*" element={<CMSLayout />}>
+              <Route index element={<Dashboard />} />
+              <Route path="articles" element={<Articles />} />
+              <Route path="articles/new" element={<ArticleForm />} />
+              <Route path="articles/edit/:id" element={<ArticleForm />} />
+              <Route path="team" element={<TeamCMS />} />
+              <Route path="team/new" element={<TeamForm />} />
+              <Route path="team/edit/:id" element={<TeamForm />} />
+              <Route path="company" element={<Company />} />
+              <Route path="subscriptions" element={<Subscriptions />} />
+            </Route>
+
+            {/* Public Routes */}
+            <Route path="*" element={
+              <>
+                <Navbar />
+                <main>
+                  <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/services" element={<Services />} />
+                    <Route path="/team" element={<Team />} />
+                    <Route path="/contact" element={<Contact />} />
+                    <Route path="/insight" element={<InsightList />} />
+                    <Route path="/insight/:slug" element={<InsightDetail />} />
+                  </Routes>
+                </main>
+                <Footer />
+                <BackToTop />
+              </>
+            } />
+          </Routes>
+        </div>
+      </Router>
+    </AuthProvider>
   );
 }
 

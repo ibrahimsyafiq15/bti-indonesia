@@ -17,7 +17,10 @@ function InsightDetail() {
   const loadArticle = async () => {
     try {
       setLoading(true);
+      console.log('[InsightDetail] Loading single article...');
+      console.log('[InsightDetail] Slug being fetched:', slug);
       const data = await articleAPI.getPublicArticle(slug);
+      console.log('[InsightDetail] Article data received:', data);
       setArticle(data);
       
       // Load related articles
@@ -25,9 +28,10 @@ function InsightDetail() {
         category: data.category, 
         limit: 3 
       });
-      setRelatedArticles(related.articles.filter(a => a._id !== data._id).slice(0, 2));
+      setRelatedArticles(related.articles.filter(a => (a.id || a._id) !== (data.id || data._id)).slice(0, 2));
     } catch (error) {
-      console.error('Failed to load article:', error);
+      console.error('[InsightDetail] Error loading article:', error);
+      console.error('[InsightDetail] Error message:', error.message);
       navigate('/insight');
     } finally {
       setLoading(false);
@@ -292,8 +296,8 @@ function InsightDetail() {
               gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
               gap: '30px'
             }}>
-              {relatedArticles.map(related => (
-                <article key={related._id} className="related-card" style={{
+              {relatedArticles.map((related, index) => (
+                <article key={related.id || related._id || `related-${index}`} className="related-card" style={{
                   background: 'white',
                   borderRadius: 'var(--radius-lg)',
                   overflow: 'hidden',

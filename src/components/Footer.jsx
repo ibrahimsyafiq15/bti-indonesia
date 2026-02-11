@@ -32,33 +32,6 @@ function Footer() {
               <img src={footerLogo || '/logo-footer.png'} alt={name} className="footer-logo-image" />
             </Link>
             <p className="footer-tagline">{description}</p>
-            <div className="footer-social">
-              {socialMedia?.linkedin && (
-                <a href={socialMedia.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-                  <i className="fab fa-linkedin"></i>
-                </a>
-              )}
-              {socialMedia?.instagram && (
-                <a href={socialMedia.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-                  <i className="fab fa-instagram"></i>
-                </a>
-              )}
-              {socialMedia?.twitter && (
-                <a href={socialMedia.twitter} target="_blank" rel="noopener noreferrer" aria-label="Twitter">
-                  <i className="fab fa-twitter"></i>
-                </a>
-              )}
-              {socialMedia?.youtube && (
-                <a href={socialMedia.youtube} target="_blank" rel="noopener noreferrer" aria-label="YouTube">
-                  <i className="fab fa-youtube"></i>
-                </a>
-              )}
-              {socialMedia?.tiktok && (
-                <a href={socialMedia.tiktok} target="_blank" rel="noopener noreferrer" aria-label="TikTok">
-                  <i className="fab fa-tiktok"></i>
-                </a>
-              )}
-            </div>
           </div>
           
           <div className="footer-links">
@@ -99,6 +72,33 @@ function Footer() {
                 <span>{address?.fullAddress}</span>
               </li>
             </ul>
+            <div className="footer-social" style={{ marginTop: '1.5rem' }}>
+              {socialMedia?.linkedin && (
+                <a href={socialMedia.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                  <i className="fab fa-linkedin"></i>
+                </a>
+              )}
+              {socialMedia?.instagram && (
+                <a href={socialMedia.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                  <i className="fab fa-instagram"></i>
+                </a>
+              )}
+              {socialMedia?.twitter && (
+                <a href={socialMedia.twitter} target="_blank" rel="noopener noreferrer" aria-label="Twitter">
+                  <i className="fab fa-twitter"></i>
+                </a>
+              )}
+              {socialMedia?.youtube && (
+                <a href={socialMedia.youtube} target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+                  <i className="fab fa-youtube"></i>
+                </a>
+              )}
+              {socialMedia?.tiktok && (
+                <a href={socialMedia.tiktok} target="_blank" rel="noopener noreferrer" aria-label="TikTok">
+                  <i className="fab fa-tiktok"></i>
+                </a>
+              )}
+            </div>
           </div>
         </div>
         

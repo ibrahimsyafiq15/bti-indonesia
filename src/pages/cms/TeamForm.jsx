@@ -32,22 +32,28 @@ function TeamForm() {
   const loadMember = async () => {
     try {
       setLoading(true);
+      console.log('[TeamForm] Loading team member with id:', id);
       const member = await teamAPI.getMember(id);
+      console.log('[TeamForm] Loaded member data:', member);
+      
+      // Map snake_case to camelCase
       setFormData({
         name: member.name,
         title: member.title,
-        profileDescription: member.profileDescription,
+        profileDescription: member.profile_description || '',
         expertise: member.expertise || [],
         credentials: member.credentials || [],
-        linkedinProfile: member.linkedinProfile || '',
+        linkedinProfile: member.linkedin_profile || '',
         photo: null,
-        isActive: member.isActive
+        isActive: member.is_active !== undefined ? member.is_active : true
       });
       if (member.photo) {
         setImagePreview(member.photo);
       }
     } catch (error) {
-      alert('Failed to load member');
+      console.error('[TeamForm] Error loading member:', error);
+      console.error('[TeamForm] Error details:', error.message, error.stack);
+      alert('Failed to load member: ' + error.message);
       navigate('/cms/team');
     } finally {
       setLoading(false);
@@ -106,6 +112,8 @@ function TeamForm() {
       }
       navigate('/cms/team');
     } catch (error) {
+      console.error('[TeamForm] Error saving member:', error);
+      console.error('[TeamForm] Error details:', error.message, error.stack);
       alert('Failed to save: ' + error.message);
     } finally {
       setSaving(false);
@@ -114,21 +122,21 @@ function TeamForm() {
 
   if (loading) {
     return (
-      <div style={{ textAlign: 'center', padding: '60px' }}>
+      <div style={{ textAlign: 'center', padding: '60px', fontFamily: "'Inter', sans-serif" }}>
         <i className="fas fa-spinner fa-spin" style={{ fontSize: '2rem', color: '#03D967' }}></i>
       </div>
     );
   }
 
   return (
-    <div className="team-form">
+    <div className="team-form" style={{ fontFamily: "'Inter', sans-serif" }}>
       <div style={{
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
         marginBottom: '24px'
       }}>
-        <h2 style={{ fontSize: '1.5rem', margin: 0 }}>
+        <h2 style={{ fontSize: '1.5rem', margin: 0, fontFamily: "'Inter', sans-serif" }}>
           {isEditing ? 'Edit Team Member' : 'Add Team Member'}
         </h2>
         <button onClick={() => navigate('/cms/team')} className="btn btn-outline">
@@ -137,7 +145,7 @@ function TeamForm() {
         </button>
       </div>
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} style={{ fontFamily: "'Inter', sans-serif" }}>
         <div style={{
           display: 'grid',
           gridTemplateColumns: '1fr 1fr',
@@ -150,10 +158,10 @@ function TeamForm() {
               padding: '24px',
               marginBottom: '20px'
             }}>
-              <h3 style={{ fontSize: '1rem', marginBottom: '16px' }}>Basic Information</h3>
+              <h3 style={{ fontSize: '1rem', marginBottom: '16px', fontFamily: "'Inter', sans-serif" }}>Basic Information</h3>
               
               <div style={{ marginBottom: '16px' }}>
-                <label style={{ display: 'block', marginBottom: '8px' }}>Name *</label>
+                <label style={{ display: 'block', marginBottom: '8px', fontFamily: "'Inter', sans-serif" }}>Name *</label>
                 <input
                   type="text"
                   name="name"
@@ -164,13 +172,14 @@ function TeamForm() {
                     width: '100%',
                     padding: '10px 12px',
                     border: '1px solid #e8e8f0',
-                    borderRadius: '6px'
+                    borderRadius: '6px',
+                    fontFamily: "'Inter', sans-serif"
                   }}
                 />
               </div>
 
               <div style={{ marginBottom: '16px' }}>
-                <label style={{ display: 'block', marginBottom: '8px' }}>Title *</label>
+                <label style={{ display: 'block', marginBottom: '8px', fontFamily: "'Inter', sans-serif" }}>Title *</label>
                 <input
                   type="text"
                   name="title"
@@ -188,7 +197,7 @@ function TeamForm() {
               </div>
 
               <div style={{ marginBottom: '16px' }}>
-                <label style={{ display: 'block', marginBottom: '8px' }}>LinkedIn Profile</label>
+                <label style={{ display: 'block', marginBottom: '8px', fontFamily: "'Inter', sans-serif" }}>LinkedIn Profile</label>
                 <input
                   type="url"
                   name="linkedinProfile"
@@ -205,7 +214,7 @@ function TeamForm() {
               </div>
 
               <div>
-                <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+                <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontFamily: "'Inter', sans-serif" }}>
                   <input
                     type="checkbox"
                     name="isActive"
@@ -222,7 +231,7 @@ function TeamForm() {
               borderRadius: '12px',
               padding: '24px'
             }}>
-              <h3 style={{ fontSize: '1rem', marginBottom: '16px' }}>Profile Photo</h3>
+              <h3 style={{ fontSize: '1rem', marginBottom: '16px', fontFamily: "'Inter', sans-serif" }}>Profile Photo</h3>
               <input
                 type="file"
                 accept="image/*"
@@ -263,7 +272,8 @@ function TeamForm() {
                     border: 'none',
                     borderRadius: '6px',
                     color: '#c0392b',
-                    cursor: 'pointer'
+                    cursor: 'pointer',
+                    fontFamily: "'Inter', sans-serif"
                   }}
                 >
                   Remove Photo
@@ -279,7 +289,7 @@ function TeamForm() {
               padding: '24px',
               marginBottom: '20px'
             }}>
-              <h3 style={{ fontSize: '1rem', marginBottom: '16px' }}>Profile Description</h3>
+              <h3 style={{ fontSize: '1rem', marginBottom: '16px', fontFamily: "'Inter', sans-serif" }}>Profile Description</h3>
               <textarea
                 name="profileDescription"
                 value={formData.profileDescription}
@@ -291,7 +301,8 @@ function TeamForm() {
                   padding: '10px 12px',
                   border: '1px solid #e8e8f0',
                   borderRadius: '6px',
-                  resize: 'vertical'
+                  resize: 'vertical',
+                  fontFamily: "'Inter', sans-serif"
                 }}
               />
             </div>
@@ -302,7 +313,7 @@ function TeamForm() {
               padding: '24px',
               marginBottom: '20px'
             }}>
-              <h3 style={{ fontSize: '1rem', marginBottom: '16px' }}>Areas of Expertise</h3>
+              <h3 style={{ fontSize: '1rem', marginBottom: '16px', fontFamily: "'Inter', sans-serif" }}>Areas of Expertise</h3>
               <div style={{ display: 'flex', gap: '8px', marginBottom: '12px' }}>
                 <input
                   type="text"
@@ -332,14 +343,15 @@ function TeamForm() {
                       fontSize: '0.85rem',
                       display: 'flex',
                       alignItems: 'center',
-                      gap: '6px'
+                      gap: '6px',
+                      fontFamily: "'Inter', sans-serif"
                     }}
                   >
                     {exp}
                     <button
                       type="button"
                       onClick={() => removeExpertise(exp)}
-                      style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+                      style={{ background: 'none', border: 'none', cursor: 'pointer', fontFamily: "'Inter', sans-serif" }}
                     >
                       <i className="fas fa-times"></i>
                     </button>
@@ -353,7 +365,7 @@ function TeamForm() {
               borderRadius: '12px',
               padding: '24px'
             }}>
-              <h3 style={{ fontSize: '1rem', marginBottom: '16px' }}>Credentials</h3>
+              <h3 style={{ fontSize: '1rem', marginBottom: '16px', fontFamily: "'Inter', sans-serif" }}>Credentials</h3>
               <div style={{ display: 'flex', gap: '8px', marginBottom: '12px' }}>
                 <input
                   type="text"
@@ -382,14 +394,15 @@ function TeamForm() {
                       borderRadius: '8px',
                       display: 'flex',
                       alignItems: 'center',
-                      justifyContent: 'space-between'
+                      justifyContent: 'space-between',
+                      fontFamily: "'Inter', sans-serif"
                     }}
                   >
                     <span><i className={cred.icon} style={{ marginRight: '8px', color: '#03D967' }}></i>{cred.label}</span>
                     <button
                       type="button"
                       onClick={() => removeCredential(index)}
-                      style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#c0392b' }}
+                      style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#c0392b', fontFamily: "'Inter', sans-serif" }}
                     >
                       <i className="fas fa-trash"></i>
                     </button>
@@ -406,7 +419,8 @@ function TeamForm() {
           justifyContent: 'flex-end',
           marginTop: '24px',
           paddingTop: '24px',
-          borderTop: '1px solid #e8e8f0'
+          borderTop: '1px solid #e8e8f0',
+          fontFamily: "'Inter', sans-serif"
         }}>
           <button
             type="button"

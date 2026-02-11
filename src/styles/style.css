@@ -771,6 +771,21 @@ p {
     background: radial-gradient(circle, rgba(3, 217, 103, 0.1) 0%, transparent 50%);
 }
 
+.cta-section::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 50%;
+    background-image: url('/cta-bg-element.png');
+    background-position: right center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    opacity: 0.15;
+    pointer-events: none;
+}
+
 .cta-content {
     position: relative;
     z-index: 1;
