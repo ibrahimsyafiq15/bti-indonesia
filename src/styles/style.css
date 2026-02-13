@@ -195,7 +195,7 @@ p {
 
 .btn-primary {
     background: var(--primary);
-    color: var(--secondary);
+    color: white;
 }
 
 .btn-primary:hover {
@@ -207,7 +207,7 @@ p {
 .btn-outline {
     background: transparent;
     color: var(--secondary);
-    border: 2px solid var(--secondary);
+    border: 1px solid color-mix(in srgb, var(--secondary), transparent 50%);
 }
 
 .btn-outline:hover {
@@ -705,6 +705,21 @@ p {
 
 .team-image {
     margin-bottom: 24px;
+    width: 180px;
+    height: 180px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    border: 4px solid var(--bg-white);
+}
+
+.team-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--radius-lg);
 }
 
 .team-placeholder {
@@ -1202,6 +1217,17 @@ p {
 .founder-photo {
     width: 280px;
     height: 280px;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    border: 4px solid var(--bg-white);
+}
+
+.founder-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--radius-lg);
 }
 
 .photo-placeholder {
@@ -1844,6 +1870,12 @@ p {
         width: 200px;
         height: 200px;
         margin: 0 auto;
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+    }
+    
+    .founder-photo img {
+        border-radius: var(--radius-lg);
     }
 
     .values-story {

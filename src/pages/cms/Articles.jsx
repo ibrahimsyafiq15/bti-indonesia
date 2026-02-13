@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { articleAPI } from '../../services/api';
+import { articleAPI, categoryAPI } from '../../services/api';
 import SuccessModal from '../../components/SuccessModal';
 import ConfirmModal from '../../components/ConfirmModal';
 
@@ -9,8 +9,13 @@ function Articles() {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState({
     status: '',
-    search: ''
+    search: '',
+    category: '',
+    author: '',
+    sortBy: 'created_at_desc'
   });
+  const [categories, setCategories] = useState([]);
+  const [authors, setAuthors] = useState([]);
   const [pagination, setPagination] = useState({
     currentPage: 1,
     totalPages: 1,
@@ -23,6 +28,7 @@ function Articles() {
 
   useEffect(() => {
     loadArticles();
+    loadFilterOptions();
   }, [pagination.currentPage, filter]);
 
   const loadArticles = async () => {
@@ -33,10 +39,7 @@ function Articles() {
         limit: 10,
         ...filter
       };
-      console.log('[Articles] Loading articles with params:', params);
       const data = await articleAPI.getArticles(params);
-      console.log('[Articles] Data received:', data);
-      
       // Map snake_case to camelCase
       const mappedArticles = data.articles.map(article => ({
         _id: article.id,
@@ -55,7 +58,6 @@ function Articles() {
         tags: article.tags || []
       }));
       
-      console.log('[Articles] Mapped articles:', mappedArticles);
       setArticles(mappedArticles);
       setPagination({
         currentPage: parseInt(data.currentPage),
@@ -68,6 +70,29 @@ function Articles() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const loadFilterOptions = async () => {
+    try {
+      console.log('[Articles] Loading filter options...');
+      const cats = await categoryAPI.getCategories();
+      const authorsData = await articleAPI.getAuthors();
+      setCategories(Array.isArray(cats) ? cats : []);
+      setAuthors(Array.isArray(authorsData) ? authorsData : []);
+    } catch (error) {
+      console.error('Failed to load filter options:', error);
+    }
+  };
+
+  const handleResetFilters = () => {
+    setFilter({
+      status: '',
+      search: '',
+      category: '',
+      author: '',
+      sortBy: 'created_at_desc'
+    });
+    setPagination(prev => ({ ...prev, currentPage: 1 }));
   };
 
   const handleDelete = (id) => {
@@ -136,55 +161,128 @@ function Articles() {
         padding: '16px 20px',
         borderRadius: '12px',
         marginBottom: '20px',
-        display: 'flex',
-        gap: '16px',
-        flexWrap: 'wrap',
-        alignItems: 'center',
         fontFamily: "'Inter', sans-serif"
       }}>
-        <input
-          type="text"
-          placeholder="Search articles..."
-          value={filter.search}
-          onChange={(e) => setFilter(prev => ({ ...prev, search: e.target.value }))}
-          style={{
-            flex: 1,
-            minWidth: '200px',
-            padding: '10px 16px',
-            border: '1px solid #e8e8f0',
-            borderRadius: '8px',
-            fontSize: '0.95rem',
-            outline: 'none',
-            fontFamily: "'Inter', sans-serif"
-          }}
-        />
-        <select
-          value={filter.status}
-          onChange={(e) => setFilter(prev => ({ ...prev, status: e.target.value }))}
-          style={{
-            padding: '10px 16px',
-            border: '1px solid #e8e8f0',
-            borderRadius: '8px',
-            fontSize: '0.95rem',
-            outline: 'none',
-            background: 'white',
-            fontFamily: "'Inter', sans-serif"
-          }}
-        >
-          <option value="">All Status</option>
-          <option value="published">Published</option>
-          <option value="draft">Draft</option>
-          <option value="unpublished">Unpublished</option>
-        </select>
-        <button
-          onClick={() => {
-            setFilter({ status: '', search: '' });
-            setPagination(prev => ({ ...prev, currentPage: 1 }));
-          }}
-          className="btn btn-outline"
-        >
-          Reset
-        </button>
+        {/* Row 1: Search, Category, Author */}
+        <div style={{
+          display: 'flex',
+          gap: '12px',
+          flexWrap: 'wrap',
+          alignItems: 'center',
+          marginBottom: '12px'
+        }}>
+          <input
+            type="text"
+            placeholder="Search articles..."
+            value={filter.search}
+            onChange={(e) => setFilter(prev => ({ ...prev, search: e.target.value }))}
+            style={{
+              flex: 1,
+              minWidth: '200px',
+              padding: '10px 16px',
+              border: '1px solid #e8e8f0',
+              borderRadius: '8px',
+              fontSize: '16px',
+              outline: 'none',
+              fontFamily: "'Inter', sans-serif"
+            }}
+          />
+          <select
+            value={filter.category}
+            onChange={(e) => setFilter(prev => ({ ...prev, category: e.target.value }))}
+            style={{
+              padding: '10px 16px',
+              border: '1px solid #e8e8f0',
+              borderRadius: '8px',
+              fontSize: '16px',
+              outline: 'none',
+              background: 'white',
+              fontFamily: "'Inter', sans-serif",
+              minWidth: '150px'
+            }}
+          >
+            <option value="">All Categories</option>
+            {categories.map(cat => (
+              <option key={cat.id} value={cat.name}>{cat.name}</option>
+            ))}
+          </select>
+          <select
+            value={filter.author}
+            onChange={(e) => setFilter(prev => ({ ...prev, author: e.target.value }))}
+            style={{
+              padding: '10px 16px',
+              border: '1px solid #e8e8f0',
+              borderRadius: '8px',
+              fontSize: '16px',
+              outline: 'none',
+              background: 'white',
+              fontFamily: "'Inter', sans-serif",
+              minWidth: '150px'
+            }}
+          >
+            <option value="">All Authors</option>
+            {authors.map(author => (
+              <option key={author} value={author}>{author}</option>
+            ))}
+          </select>
+        </div>
+        
+        {/* Row 2: Status, Sort By, Reset */}
+        <div style={{
+          display: 'flex',
+          gap: '12px',
+          flexWrap: 'wrap',
+          alignItems: 'center'
+        }}>
+          <select
+            value={filter.status}
+            onChange={(e) => setFilter(prev => ({ ...prev, status: e.target.value }))}
+            style={{
+              padding: '10px 16px',
+              border: '1px solid #e8e8f0',
+              borderRadius: '8px',
+              fontSize: '16px',
+              outline: 'none',
+              background: 'white',
+              fontFamily: "'Inter', sans-serif",
+              minWidth: '130px'
+            }}
+          >
+            <option value="">All Status</option>
+            <option value="published">Published</option>
+            <option value="draft">Draft</option>
+            <option value="unpublished">Unpublished</option>
+          </select>
+          <select
+            value={filter.sortBy}
+            onChange={(e) => setFilter(prev => ({ ...prev, sortBy: e.target.value }))}
+            style={{
+              padding: '10px 16px',
+              border: '1px solid #e8e8f0',
+              borderRadius: '8px',
+              fontSize: '16px',
+              outline: 'none',
+              background: 'white',
+              fontFamily: "'Inter', sans-serif",
+              minWidth: '160px'
+            }}
+          >
+            <option value="created_at_desc">Newest First</option>
+            <option value="created_at_asc">Oldest First</option>
+            <option value="title_asc">Title A-Z</option>
+            <option value="title_desc">Title Z-A</option>
+            <option value="published_at_desc">Published Date</option>
+            <option value="views_desc">Most Viewed</option>
+          </select>
+          <button
+            onClick={handleResetFilters}
+            className="btn btn-outline"
+            style={{ marginLeft: 'auto' }}
+          >
+            <i className="fas fa-undo" style={{ marginRight: '6px' }}></i>
+            Reset Filters
+          </button>
+        </div>
       </div>
 
       {/* Table */}

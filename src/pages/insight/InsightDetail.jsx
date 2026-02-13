@@ -17,21 +17,55 @@ function InsightDetail() {
   const loadArticle = async () => {
     try {
       setLoading(true);
-      console.log('[InsightDetail] Loading single article...');
-      console.log('[InsightDetail] Slug being fetched:', slug);
       const data = await articleAPI.getPublicArticle(slug);
-      console.log('[InsightDetail] Article data received:', data);
-      setArticle(data);
+      
+      // Map snake_case to camelCase
+      const mappedArticle = {
+        id: data.id,
+        title: data.title,
+        slug: data.slug,
+        content: data.content,
+        excerpt: data.excerpt,
+        category: data.category,
+        author: data.author,
+        status: data.status,
+        featuredImage: data.featured_image,
+        createdAt: data.created_at,
+        updatedAt: data.updated_at,
+        publishedAt: data.published_at,
+        views: data.views,
+        tags: data.tags || []
+      };
+      
+      setArticle(mappedArticle);
       
       // Load related articles
       const related = await articleAPI.getPublicArticles({ 
         category: data.category, 
         limit: 3 
       });
-      setRelatedArticles(related.articles.filter(a => (a.id || a._id) !== (data.id || data._id)).slice(0, 2));
+      
+      // Map snake_case to camelCase for related articles
+      const mappedRelatedArticles = related.articles.map(article => ({
+        id: article.id,
+        title: article.title,
+        slug: article.slug,
+        content: article.content,
+        excerpt: article.excerpt,
+        category: article.category,
+        author: article.author,
+        status: article.status,
+        featuredImage: article.featured_image,
+        createdAt: article.created_at,
+        updatedAt: article.updated_at,
+        publishedAt: article.published_at,
+        views: article.views,
+        tags: article.tags || []
+      }));
+      
+      setRelatedArticles(mappedRelatedArticles.filter(a => (a.id || a._id) !== (mappedArticle.id || mappedArticle._id)).slice(0, 2));
     } catch (error) {
       console.error('[InsightDetail] Error loading article:', error);
-      console.error('[InsightDetail] Error message:', error.message);
       navigate('/insight');
     } finally {
       setLoading(false);

@@ -2,9 +2,10 @@ import { useEffect } from 'react';
 
 export function useScrollAnimation() {
   useEffect(() => {
-    const animatedElements = document.querySelectorAll('[data-aos]');
-    
     const animateOnScroll = () => {
+      // Query setiap kali scroll untuk mendapatkan elemen terbaru
+      const animatedElements = document.querySelectorAll('[data-aos]:not(.aos-animate)');
+      
       animatedElements.forEach(element => {
         const elementTop = element.getBoundingClientRect().top;
         const elementBottom = element.getBoundingClientRect().bottom;
@@ -17,8 +18,8 @@ export function useScrollAnimation() {
       });
     };
     
-    // Initial check
-    animateOnScroll();
+    // Initial check dengan delay kecil untuk memastikan DOM sudah siap
+    setTimeout(animateOnScroll, 100);
     
     // Check on scroll with throttling
     let ticking = false;

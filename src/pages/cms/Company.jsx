@@ -25,11 +25,9 @@ function Company() {
       tiktok: '',
       twitter: ''
     },
-    logo: null,
-    footerLogo: null
+
   });
-  const [logoPreview, setLogoPreview] = useState(null);
-  const [footerLogoPreview, setFooterLogoPreview] = useState(null);
+
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
@@ -78,8 +76,7 @@ function Company() {
       console.log('[Company] Mapped form data:', mappedFormData);
       setFormData(mappedFormData);
       
-      if (data?.logo) setLogoPreview(data.logo);
-      if (data?.footerLogo) setFooterLogoPreview(data.footerLogo);
+
     } catch (error) {
       console.error('[Company] Error loading company data:', error);
       console.error('[Company] Error details:', error.message, error.stack);
@@ -103,23 +100,6 @@ function Company() {
         [field]: value
       }
     }));
-    setSaved(false);
-  };
-
-  const handleImageChange = (e, field) => {
-    const file = e.target.files[0];
-    if (file) {
-      setFormData(prev => ({ ...prev, [field]: file }));
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        if (field === 'logo') {
-          setLogoPreview(reader.result);
-        } else {
-          setFooterLogoPreview(reader.result);
-        }
-      };
-      reader.readAsDataURL(file);
-    }
     setSaved(false);
   };
 
@@ -214,7 +194,8 @@ function Company() {
                     padding: '10px 12px',
                     border: '1px solid #e8e8f0',
                     borderRadius: '6px',
-                    fontFamily: "'Inter', sans-serif"
+                    fontFamily: "'Inter', sans-serif",
+                    fontSize: '16px'
                   }}
                 />
               </div>
@@ -237,7 +218,7 @@ function Company() {
                     borderRadius: '6px',
                     resize: 'vertical',
                     fontFamily: "'Inter', sans-serif",
-                    fontSize: '0.95rem'
+                    fontSize: '16px'
                   }}
                 />
               </div>
@@ -259,7 +240,8 @@ function Company() {
                     border: '1px solid #e8e8f0',
                     borderRadius: '6px',
                     resize: 'vertical',
-                    fontFamily: "'Inter', sans-serif"
+                    fontFamily: "'Inter', sans-serif",
+                    fontSize: '16px'
                   }}
                 />
                 <small style={{ color: '#6b6b7b', fontFamily: "'Inter', sans-serif" }}>{(formData.metaDescription || '').length}/160</small>
@@ -381,78 +363,6 @@ function Company() {
           </div>
 
           <div>
-            {/* Logos */}
-            <div style={{
-              background: 'white',
-              borderRadius: '12px',
-              padding: '24px',
-              marginBottom: '20px'
-            }}>
-              <h3 style={{ fontSize: '1rem', marginBottom: '16px', fontFamily: "'Inter', sans-serif" }}>Logos</h3>
-              
-              <div style={{ marginBottom: '20px' }}>
-                <label style={{ display: 'block', marginBottom: '8px', fontFamily: "'Inter', sans-serif" }}>Header Logo</label>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => handleImageChange(e, 'logo')}
-                  style={{ display: 'none' }}
-                  id="company-logo"
-                />
-                <label
-                  htmlFor="company-logo"
-                  style={{
-                    display: 'block',
-                    padding: '30px',
-                    border: '2px dashed #e8e8f0',
-                    borderRadius: '8px',
-                    textAlign: 'center',
-                    cursor: 'pointer',
-                    background: logoPreview ? `url(${logoPreview}) center/contain no-repeat` : '#f8f9fc',
-                    minHeight: logoPreview ? '100px' : 'auto'
-                  }}
-                >
-                  {!logoPreview && (
-                    <>
-                      <i className="fas fa-cloud-upload-alt" style={{ fontSize: '1.5rem', color: '#9a9aaa' }}></i>
-                      <p style={{ margin: '8px 0 0', fontSize: '0.85rem', color: '#6b6b7b', fontFamily: "'Inter', sans-serif" }}>Upload logo</p>
-                    </>
-                  )}
-                </label>
-              </div>
-
-              <div>
-                <label style={{ display: 'block', marginBottom: '8px', fontFamily: "'Inter', sans-serif" }}>Footer Logo</label>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => handleImageChange(e, 'footerLogo')}
-                  style={{ display: 'none' }}
-                  id="footer-logo"
-                />
-                <label
-                  htmlFor="footer-logo"
-                  style={{
-                    display: 'block',
-                    padding: '30px',
-                    border: '2px dashed #e8e8f0',
-                    borderRadius: '8px',
-                    textAlign: 'center',
-                    cursor: 'pointer',
-                    background: footerLogoPreview ? `url(${footerLogoPreview}) center/contain no-repeat` : '#f8f9fc',
-                    minHeight: footerLogoPreview ? '100px' : 'auto'
-                  }}
-                >
-                  {!footerLogoPreview && (
-                    <>
-                      <i className="fas fa-cloud-upload-alt" style={{ fontSize: '1.5rem', color: '#9a9aaa' }}></i>
-                      <p style={{ margin: '8px 0 0', fontSize: '0.85rem', color: '#6b6b7b', fontFamily: "'Inter', sans-serif" }}>Upload footer logo</p>
-                    </>
-                  )}
-                </label>
-              </div>
-            </div>
-
             {/* Social Media */}
             <div style={{
               background: 'white',
@@ -480,10 +390,10 @@ function Company() {
                       placeholder={`https://${key}.com/...`}
                       style={{
                         width: '100%',
-                        padding: '8px 12px',
+                        padding: '10px 12px',
                         border: '1px solid #e8e8f0',
                         borderRadius: '6px',
-                        fontSize: '0.9rem'
+                        fontSize: '16px'
                       }}
                     />
                   </div>

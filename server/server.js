@@ -43,6 +43,8 @@ app.use('/api/articles', checkDB, require('./routes/articles'));
 app.use('/api/team', checkDB, require('./routes/team'));
 app.use('/api/company', checkDB, require('./routes/company'));
 app.use('/api/subscriptions', checkDB, require('./routes/subscriptions'));
+app.use('/api/auth', require('./routes/auth'));
+app.use('/api/categories', checkDB, require('./routes/categories'));
 
 // Health check
 app.get('/api/health', (req, res) => {

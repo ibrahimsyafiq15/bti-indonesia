@@ -42,11 +42,28 @@ export function AuthProvider({ children }) {
     // Simulate API call delay
     await new Promise(resolve => setTimeout(resolve, 500));
 
-    // Validate credentials
-    if (email === HARDCODED_CREDENTIALS.email && password === HARDCODED_CREDENTIALS.password) {
+    // Get stored user data to check the current email
+    const storedUser = localStorage.getItem('bti_auth_user');
+    let validEmail = HARDCODED_CREDENTIALS.email;
+    let validName = 'Administrator';
+    
+    // If user exists in localStorage, use that email for validation
+    if (storedUser) {
+      try {
+        const parsedUser = JSON.parse(storedUser);
+        validEmail = parsedUser.email || HARDCODED_CREDENTIALS.email;
+        validName = parsedUser.name || 'Administrator';
+        console.log('[Auth] Using stored email for validation:', validEmail);
+      } catch (e) {
+        console.error('[Auth] Error parsing stored user:', e);
+      }
+    }
+
+    // Validate credentials - password is always hardcoded for demo
+    if (email === validEmail && password === HARDCODED_CREDENTIALS.password) {
       const userData = {
         email: email,
-        name: 'Administrator',
+        name: validName,
         role: 'admin'
       };
       
@@ -60,7 +77,7 @@ export function AuthProvider({ children }) {
       // Update state
       setUser(userData);
       setIsAuthenticated(true);
-      console.log('[Auth] Login successful');
+      console.log('[Auth] Login successful with email:', email);
       
       return { success: true };
     } else {
@@ -83,12 +100,22 @@ export function AuthProvider({ children }) {
     setIsAuthenticated(false);
   };
 
+  const updateUser = (userData) => {
+    console.log('[Auth] Updating user:', userData);
+    // Update localStorage
+    const updatedUser = { ...user, ...userData };
+    localStorage.setItem('bti_auth_user', JSON.stringify(updatedUser));
+    // Update state
+    setUser(updatedUser);
+  };
+
   const value = {
     user,
     isAuthenticated,
     isLoading,
     login,
-    logout
+    logout,
+    updateUser
   };
 
   return (

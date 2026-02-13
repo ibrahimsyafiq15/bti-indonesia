@@ -20,8 +20,20 @@ function TeamForm() {
   const [imagePreview, setImagePreview] = useState(null);
   const [expertiseInput, setExpertiseInput] = useState('');
   const [credentialInput, setCredentialInput] = useState({ icon: 'fas fa-check', label: '' });
+  const [showIconPicker, setShowIconPicker] = useState(false);
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
+
+  const availableIcons = [
+    'fas fa-check', 'fas fa-star', 'fas fa-award', 'fas fa-certificate',
+    'fas fa-graduation-cap', 'fas fa-university', 'fas fa-briefcase',
+    'fas fa-user-tie', 'fas fa-medal', 'fas fa-trophy',
+    'fas fa-lightbulb', 'fas fa-brain', 'fas fa-users',
+    'fas fa-handshake', 'fas fa-chart-line', 'fas fa-globe',
+    'fas fa-building', 'fas fa-industry', 'fas fa-cogs',
+    'fas fa-rocket', 'fas fa-flag', 'fas fa-book',
+    'fas fa-microscope', 'fas fa-flask', 'fas fa-laptop-code'
+  ];
 
   useEffect(() => {
     if (isEditing) {
@@ -173,6 +185,7 @@ function TeamForm() {
                     padding: '10px 12px',
                     border: '1px solid #e8e8f0',
                     borderRadius: '6px',
+                    fontSize: '16px',
                     fontFamily: "'Inter', sans-serif"
                   }}
                 />
@@ -191,7 +204,8 @@ function TeamForm() {
                     width: '100%',
                     padding: '10px 12px',
                     border: '1px solid #e8e8f0',
-                    borderRadius: '6px'
+                    borderRadius: '6px',
+                    fontSize: '16px'
                   }}
                 />
               </div>
@@ -208,7 +222,8 @@ function TeamForm() {
                     width: '100%',
                     padding: '10px 12px',
                     border: '1px solid #e8e8f0',
-                    borderRadius: '6px'
+                    borderRadius: '6px',
+                    fontSize: '16px'
                   }}
                 />
               </div>
@@ -301,6 +316,7 @@ function TeamForm() {
                   padding: '10px 12px',
                   border: '1px solid #e8e8f0',
                   borderRadius: '6px',
+                  fontSize: '16px',
                   resize: 'vertical',
                   fontFamily: "'Inter', sans-serif"
                 }}
@@ -325,7 +341,8 @@ function TeamForm() {
                     flex: 1,
                     padding: '10px 12px',
                     border: '1px solid #e8e8f0',
-                    borderRadius: '6px'
+                    borderRadius: '6px',
+                    fontSize: '16px'
                   }}
                 />
                 <button type="button" onClick={addExpertise} className="btn btn-primary">
@@ -367,6 +384,20 @@ function TeamForm() {
             }}>
               <h3 style={{ fontSize: '1rem', marginBottom: '16px', fontFamily: "'Inter', sans-serif" }}>Credentials</h3>
               <div style={{ display: 'flex', gap: '8px', marginBottom: '12px' }}>
+                <button
+                  type="button"
+                  onClick={() => setShowIconPicker(!showIconPicker)}
+                  style={{
+                    padding: '10px 12px',
+                    border: '1px solid #e8e8f0',
+                    borderRadius: '6px',
+                    background: 'white',
+                    cursor: 'pointer'
+                  }}
+                  title="Select Icon"
+                >
+                  <i className={credentialInput.icon} style={{ color: '#03D967' }}></i>
+                </button>
                 <input
                   type="text"
                   value={credentialInput.label}
@@ -377,13 +408,50 @@ function TeamForm() {
                     flex: 1,
                     padding: '10px 12px',
                     border: '1px solid #e8e8f0',
-                    borderRadius: '6px'
+                    borderRadius: '6px',
+                    fontSize: '16px'
                   }}
                 />
                 <button type="button" onClick={addCredential} className="btn btn-primary">
                   Add
                 </button>
               </div>
+              
+              {/* Icon Picker */}
+              {showIconPicker && (
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(8, 1fr)',
+                  gap: '8px',
+                  padding: '12px',
+                  background: '#f8f9fc',
+                  borderRadius: '8px',
+                  marginBottom: '12px',
+                  maxHeight: '200px',
+                  overflowY: 'auto'
+                }}>
+                  {availableIcons.map(icon => (
+                    <button
+                      key={icon}
+                      type="button"
+                      onClick={() => {
+                        setCredentialInput(prev => ({ ...prev, icon }));
+                        setShowIconPicker(false);
+                      }}
+                      style={{
+                        padding: '10px',
+                        border: credentialInput.icon === icon ? '2px solid #03D967' : '1px solid #e8e8f0',
+                        borderRadius: '6px',
+                        background: credentialInput.icon === icon ? '#e8f5e9' : 'white',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      <i className={icon} style={{ color: '#1a1a2e' }}></i>
+                    </button>
+                  ))}
+                </div>
+              )}
+              
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 {formData.credentials.map((cred, index) => (
                   <div

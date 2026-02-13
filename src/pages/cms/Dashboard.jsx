@@ -61,13 +61,6 @@ function Dashboard() {
       link: '/cms/articles'
     },
     { 
-      label: 'Team Members', 
-      value: stats.teamMembers, 
-      icon: 'fas fa-users', 
-      color: '#f39c12',
-      link: '/cms/team'
-    },
-    { 
       label: 'Subscribers', 
       value: stats.subscribers, 
       icon: 'fas fa-envelope', 
@@ -159,9 +152,9 @@ function Dashboard() {
             <i className="fas fa-plus" style={{ marginRight: '8px' }}></i>
             New Article
           </Link>
-          <Link to="/cms/team/new" className="btn btn-outline">
-            <i className="fas fa-user-plus" style={{ marginRight: '8px' }}></i>
-            Add Team Member
+          <Link to="/cms/categories" className="btn btn-outline">
+            <i className="fas fa-folder" style={{ marginRight: '8px' }}></i>
+            Manage Categories
           </Link>
           <Link to="/cms/company" className="btn btn-outline">
             <i className="fas fa-building" style={{ marginRight: '8px' }}></i>

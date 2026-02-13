@@ -121,7 +121,7 @@ function Subscriptions() {
             padding: '10px 16px',
             border: '1px solid #e8e8f0',
             borderRadius: '8px',
-            fontSize: '0.95rem',
+            fontSize: '16px',
             fontFamily: "'Inter', sans-serif"
           }}
         >

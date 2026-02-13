@@ -12,6 +12,7 @@ function CMSLayout() {
   const menuItems = [
     { path: '/cms', icon: 'fas fa-tachometer-alt', label: 'Dashboard' },
     { path: '/cms/articles', icon: 'fas fa-newspaper', label: 'Articles' },
+    { path: '/cms/categories', icon: 'fas fa-folder', label: 'Categories' },
     { path: '/cms/team', icon: 'fas fa-users', label: 'Our Team' },
     { path: '/cms/company', icon: 'fas fa-building', label: 'Company' },
     { path: '/cms/subscriptions', icon: 'fas fa-envelope', label: 'Subscriptions' },
@@ -150,30 +151,6 @@ function CMSLayout() {
           padding: '16px',
           borderTop: '1px solid rgba(255,255,255,0.1)'
         }}>
-          {/* Collapse Button */}
-          <button
-            onClick={() => setSidebarOpen(!sidebarOpen)}
-            style={{
-              width: '100%',
-              padding: '10px',
-              background: 'rgba(255,255,255,0.1)',
-              border: 'none',
-              borderRadius: '8px',
-              color: 'white',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '8px',
-              marginBottom: '8px'
-            }}
-          >
-            <i className={`fas fa-chevron-${sidebarOpen ? 'left' : 'right'}`}></i>
-            {sidebarOpen && <span>Collapse</span>}
-          </button>
-          
-          {/* Logout Button - REMOVED, moved to user dropdown */}
-          
           <Link
             to="/"
             style={{
@@ -212,11 +189,44 @@ function CMSLayout() {
           top: 0,
           zIndex: 50
         }}>
+          {/* Collapse Button */}
+          <button
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+            style={{
+              width: '40px',
+              height: '40px',
+              background: 'transparent',
+              border: '1px solid #e8e8f0',
+              borderRadius: '8px',
+              color: '#6b6b7b',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              transition: 'all 0.2s'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = '#f8f9fc';
+              e.currentTarget.style.borderColor = '#03D967';
+              e.currentTarget.style.color = '#03D967';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'transparent';
+              e.currentTarget.style.borderColor = '#e8e8f0';
+              e.currentTarget.style.color = '#6b6b7b';
+            }}
+            title={sidebarOpen ? 'Collapse sidebar' : 'Expand sidebar'}
+          >
+            <i className={`fas fa-${sidebarOpen ? 'bars' : 'bars'}`}></i>
+          </button>
+
           <h1 style={{
             fontSize: '1.25rem',
             fontWeight: '600',
-            color: '#1a1a2e'
-          }}>BTI Content Management</h1>
+            color: '#1a1a2e',
+            flex: 1,
+            marginLeft: '20px'
+          }}></h1>
           
           {/* User Dropdown */}
           <div 
@@ -230,18 +240,20 @@ function CMSLayout() {
                 alignItems: 'center',
                 gap: '12px',
                 padding: '6px 16px',
-                background: '#f0f2f5',
+                background: 'transparent',
                 borderRadius: '8px',
-                border: 'none',
+                border: '1px solid transparent',
                 cursor: 'pointer',
                 fontFamily: "'Inter', sans-serif",
-                transition: 'background 0.2s'
+                transition: 'all 0.2s'
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.background = '#e8e8f0';
+                e.currentTarget.style.background = '#f8f9fc';
+                e.currentTarget.style.borderColor = '#e8e8f0';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.background = '#f0f2f5';
+                e.currentTarget.style.background = 'transparent';
+                e.currentTarget.style.borderColor = 'transparent';
               }}
             >
               <div style={{
@@ -300,11 +312,10 @@ function CMSLayout() {
                 overflow: 'hidden',
                 fontFamily: "'Inter', sans-serif"
               }}>
-                {/* API Status */}
-                <a 
-                  href="http://localhost:5000" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
+                {/* My Profile */}
+                <Link 
+                  to="/cms/profile"
+                  onClick={() => setUserMenuOpen(false)}
                   style={{
                     display: 'flex',
                     alignItems: 'center',
@@ -314,8 +325,7 @@ function CMSLayout() {
                     textDecoration: 'none',
                     fontSize: '0.9rem',
                     fontFamily: "'Inter', sans-serif",
-                    transition: 'background 0.2s',
-                    borderBottom: '1px solid #f0f0f5'
+                    transition: 'background 0.2s'
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.background = '#f8f9fc';
@@ -324,9 +334,9 @@ function CMSLayout() {
                     e.currentTarget.style.background = 'transparent';
                   }}
                 >
-                  <i className="fas fa-server" style={{ color: '#03D967', width: '20px' }}></i>
-                  API Status
-                </a>
+                  <i className="fas fa-user-cog" style={{ color: '#03D967', width: '20px' }}></i>
+                  My Profile
+                </Link>
 
                 {/* Divider */}
                 <div style={{ height: '1px', background: '#f0f0f5' }}></div>

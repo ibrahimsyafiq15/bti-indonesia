@@ -112,8 +112,23 @@ function Footer() {
           </div>
         </div>
         
-        <div className="footer-bottom">
+        <div className="footer-bottom" style={{ position: 'relative' }}>
           <p>&copy; {new Date().getFullYear()} {name}. All rights reserved.</p>
+          {/* Secret CMS Access */}
+          <Link 
+            to="/cms/login" 
+            style={{
+              position: 'absolute',
+              bottom: '10px',
+              right: '10px',
+              width: '6px',
+              height: '6px',
+              background: 'rgba(255,255,255,0.08)',
+              borderRadius: '50%',
+              cursor: 'default'
+            }}
+            aria-hidden="true"
+          />
         </div>
       </div>
     </footer>

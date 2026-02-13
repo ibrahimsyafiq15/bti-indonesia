@@ -7,7 +7,9 @@ const upload = require('../middleware/upload');
 // Get all articles (public - only published)
 router.get('/public', async (req, res) => {
   try {
-    const { page = 1, limit = 10, category, tag } = req.query;
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const { category, tag } = req.query;
     const offset = (page - 1) * limit;
     
     let whereClause = 'WHERE status = "published"';
@@ -28,8 +30,8 @@ router.get('/public', async (req, res) => {
       SELECT * FROM articles 
       ${whereClause}
       ORDER BY published_at DESC
-      LIMIT ? OFFSET ?
-    `, [...params, parseInt(limit), parseInt(offset)]);
+      LIMIT ${limit} OFFSET ${offset}
+    `, params);
 
     // Get tags for each article
     for (const article of articles) {
@@ -43,7 +45,7 @@ router.get('/public', async (req, res) => {
     res.json({
       articles,
       totalPages: Math.ceil(total / limit),
-      currentPage: parseInt(page),
+      currentPage: page,
       total
     });
   } catch (error) {
@@ -80,15 +82,30 @@ router.get('/public/:slug', async (req, res) => {
 // Get all articles (admin - all statuses)
 router.get('/', async (req, res) => {
   try {
-    const { page = 1, limit = 10, status, search } = req.query;
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const { status, search, category, author, sortBy } = req.query;
     const offset = (page - 1) * limit;
     
     let whereClause = '';
     const params = [];
 
     if (status) {
-      whereClause += 'WHERE status = ?';
+      whereClause += whereClause ? ' AND' : 'WHERE';
+      whereClause += ' status = ?';
       params.push(status);
+    }
+
+    if (category) {
+      whereClause += whereClause ? ' AND' : 'WHERE';
+      whereClause += ' category = ?';
+      params.push(category);
+    }
+
+    if (author) {
+      whereClause += whereClause ? ' AND' : 'WHERE';
+      whereClause += ' author = ?';
+      params.push(author);
     }
 
     if (search) {
@@ -97,12 +114,36 @@ router.get('/', async (req, res) => {
       params.push(`%${search}%`, `%${search}%`);
     }
 
+    // Determine order by clause
+    let orderBy = 'ORDER BY created_at DESC';
+    if (sortBy) {
+      switch (sortBy) {
+        case 'created_at_asc':
+          orderBy = 'ORDER BY created_at ASC';
+          break;
+        case 'title_asc':
+          orderBy = 'ORDER BY title ASC';
+          break;
+        case 'title_desc':
+          orderBy = 'ORDER BY title DESC';
+          break;
+        case 'published_at_desc':
+          orderBy = 'ORDER BY published_at DESC';
+          break;
+        case 'views_desc':
+          orderBy = 'ORDER BY views DESC';
+          break;
+        default:
+          orderBy = 'ORDER BY created_at DESC';
+      }
+    }
+
     const articles = await query(`
       SELECT * FROM articles 
       ${whereClause}
-      ORDER BY created_at DESC
-      LIMIT ? OFFSET ?
-    `, [...params, parseInt(limit), parseInt(offset)]);
+      ${orderBy}
+      LIMIT ${limit} OFFSET ${offset}
+    `, params);
 
     // Get tags for each article
     for (const article of articles) {
@@ -115,7 +156,7 @@ router.get('/', async (req, res) => {
     res.json({
       articles,
       totalPages: Math.ceil(countResult.total / limit),
-      currentPage: parseInt(page),
+      currentPage: page,
       total: countResult.total
     });
   } catch (error) {
@@ -273,6 +314,16 @@ router.get('/meta/tags', async (req, res) => {
   try {
     const results = await query('SELECT DISTINCT tag FROM article_tags ORDER BY tag');
     res.json(results.map(r => r.tag));
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// Get authors
+router.get('/meta/authors', async (req, res) => {
+  try {
+    const results = await query('SELECT DISTINCT author FROM articles WHERE author IS NOT NULL AND author != "" ORDER BY author');
+    res.json(results.map(r => r.author));
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

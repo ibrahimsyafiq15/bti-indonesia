@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { articleAPI } from '../../services/api';
+import { articleAPI, categoryAPI } from '../../services/api';
+import { useScrollAnimation } from '../../hooks/useScrollAnimation';
 import SubscribeSection from './SubscribeSection';
 
 function InsightList() {
@@ -22,18 +23,56 @@ function InsightList() {
     loadCategories();
   }, [pagination.currentPage, filter]);
 
+  // Initialize scroll animation
+  useScrollAnimation();
+  
+  // Re-trigger animation when articles change
+  useEffect(() => {
+    if (!loading && articles.length > 0) {
+      // Trigger animation for new elements
+      const animatedElements = document.querySelectorAll('[data-aos]');
+      animatedElements.forEach(element => {
+        const elementTop = element.getBoundingClientRect().top;
+        const windowHeight = window.innerHeight;
+        if (elementTop < windowHeight * 0.85) {
+          element.classList.add('aos-animate');
+        }
+      });
+    }
+  }, [articles, loading]);
+
   const loadArticles = async () => {
     try {
       setLoading(true);
-      console.log('[InsightList] Loading articles...');
       const params = {
         page: pagination.currentPage,
-        limit: 9,
-        ...filter
+        limit: 9
       };
+      // Only add filter if it has value
+      if (filter.category) params.category = filter.category;
+      if (filter.tag) params.tag = filter.tag;
+      
       const data = await articleAPI.getPublicArticles(params);
-      console.log('[InsightList] Data received:', data);
-      setArticles(data.articles);
+      
+      // Map snake_case to camelCase
+      const mappedArticles = (data.articles || []).map(article => ({
+        id: article.id,
+        title: article.title,
+        slug: article.slug,
+        content: article.content,
+        excerpt: article.excerpt,
+        category: article.category,
+        author: article.author,
+        status: article.status,
+        featuredImage: article.featured_image,
+        createdAt: article.created_at,
+        updatedAt: article.updated_at,
+        publishedAt: article.published_at,
+        views: article.views,
+        tags: article.tags || []
+      }));
+      
+      setArticles(mappedArticles);
       setPagination({
         currentPage: parseInt(data.currentPage),
         totalPages: data.totalPages,
@@ -49,10 +88,13 @@ function InsightList() {
 
   const loadCategories = async () => {
     try {
-      const cats = await articleAPI.getCategories();
-      setCategories(cats);
+      console.log('[InsightList] Loading categories...');
+      const cats = await categoryAPI.getPublicCategories();
+      console.log('[InsightList] Categories loaded:', cats);
+      setCategories(Array.isArray(cats) ? cats : []);
     } catch (error) {
-      console.error('Failed to load categories:', error);
+      console.error('[InsightList] Failed to load categories:', error);
+      setCategories([]);
     }
   };
 
@@ -90,25 +132,90 @@ function InsightList() {
       <section className="section-padding">
         <div className="container">
           {/* Filters */}
-          <div className="insight-filters" style={{ marginBottom: '40px' }}>
-            <div className="filter-group">
-              <label>Category:</label>
+          <div className="insight-filters" style={{ 
+            marginBottom: '40px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '16px',
+            flexWrap: 'wrap'
+          }}>
+            <div className="filter-group" style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '12px'
+            }}>
+              <label style={{
+                fontSize: '0.95rem',
+                fontWeight: '500',
+                color: 'var(--text-dark)'
+              }}>Filter by:</label>
               <select 
                 value={filter.category} 
                 onChange={(e) => handleFilterChange('category', e.target.value)}
                 className="filter-select"
+                style={{
+                  padding: '10px 36px 10px 16px',
+                  border: '2px solid var(--border-light)',
+                  borderRadius: '50px',
+                  fontSize: '0.95rem',
+                  fontWeight: '500',
+                  color: filter.category ? 'var(--secondary)' : 'var(--text-body)',
+                  backgroundColor: filter.category ? 'rgba(3, 217, 103, 0.1)' : 'var(--bg-white)',
+                  backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b6b7b' d='M6 8L1 3h10z'/%3E%3C/svg%3E")`,
+                  backgroundRepeat: 'no-repeat',
+                  backgroundPosition: 'right 14px center',
+                  cursor: 'pointer',
+                  appearance: 'none',
+                  minWidth: '160px',
+                  transition: 'all 0.2s ease'
+                }}
+                onMouseEnter={(e) => {
+                  if (!filter.category) {
+                    e.target.style.borderColor = 'var(--primary)';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!filter.category) {
+                    e.target.style.borderColor = 'var(--border-light)';
+                  }
+                }}
               >
                 <option value="">All Categories</option>
-                {categories.map(cat => (
-                  <option key={cat} value={cat}>{cat}</option>
+                {(Array.isArray(categories) ? categories : []).map(cat => (
+                  <option key={cat.id} value={cat.name}>{cat.name}</option>
                 ))}
               </select>
             </div>
             {filter.category && (
               <button 
-                className="btn btn-outline btn-sm"
+                className="btn btn-sm"
                 onClick={() => handleFilterChange('category', '')}
+                style={{
+                  padding: '8px 16px',
+                  background: 'var(--bg-light)',
+                  color: 'var(--text-light)',
+                  border: '1px solid var(--border-light)',
+                  borderRadius: '50px',
+                  fontSize: '0.85rem',
+                  fontWeight: '500',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.background = '#fee2e2';
+                  e.target.style.color = '#dc2626';
+                  e.target.style.borderColor = '#fecaca';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.background = 'var(--bg-light)';
+                  e.target.style.color = 'var(--text-light)';
+                  e.target.style.borderColor = 'var(--border-light)';
+                }}
               >
+                <i className="fas fa-times"></i>
                 Clear Filter
               </button>
             )}
@@ -135,7 +242,7 @@ function InsightList() {
                 marginBottom: '40px'
               }}>
                 {articles.map((article, index) => (
-                  <article key={article.id || article._id || `article-${index}`} className="article-card" data-aos="fade-up">
+                  <article key={article.id || article._id || `article-${index}`} className="article-card" data-aos="fade-up" style={{ opacity: 1 }}>
                     <Link to={`/insight/${article.slug}`} className="article-image-link">
                       <div className="article-image" style={{
                         height: '220px',

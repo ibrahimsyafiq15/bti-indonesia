@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { articleAPI } from '../../services/api';
+import { articleAPI, categoryAPI } from '../../services/api';
 import SuccessModal from '../../components/SuccessModal';
 
 // Simple WYSIWYG Editor Component
@@ -162,7 +162,9 @@ function ArticleForm() {
 
   const loadCategories = async () => {
     try {
-      const cats = await articleAPI.getCategories();
+      console.log('[ArticleForm] Loading categories...');
+      const cats = await categoryAPI.getPublicCategories();
+      console.log('[ArticleForm] Categories loaded:', cats);
       if (cats.length > 0) {
         setCategories(cats);
       }
@@ -279,7 +281,7 @@ function ArticleForm() {
                   padding: '12px 16px',
                   border: '1px solid #e8e8f0',
                   borderRadius: '8px',
-                  fontSize: '1rem',
+                  fontSize: '16px',
                   outline: 'none',
                   fontFamily: "'Inter', sans-serif"
                 }}
@@ -315,7 +317,7 @@ function ArticleForm() {
                   padding: '12px 16px',
                   border: '1px solid #e8e8f0',
                   borderRadius: '8px',
-                  fontSize: '1rem',
+                  fontSize: '16px',
                   outline: 'none',
                   resize: 'vertical',
                   fontFamily: "'Inter', sans-serif"
@@ -347,7 +349,7 @@ function ArticleForm() {
                     padding: '10px 12px',
                     border: '1px solid #e8e8f0',
                     borderRadius: '6px',
-                    fontSize: '0.95rem',
+                    fontSize: '16px',
                     fontFamily: "'Inter', sans-serif"
                   }}
                 >
@@ -371,7 +373,7 @@ function ArticleForm() {
                     padding: '10px 12px',
                     border: '1px solid #e8e8f0',
                     borderRadius: '6px',
-                    fontSize: '0.95rem'
+                    fontSize: '16px'
                   }}
                 />
               </div>
@@ -394,11 +396,12 @@ function ArticleForm() {
                   padding: '10px 12px',
                   border: '1px solid #e8e8f0',
                   borderRadius: '6px',
-                  fontSize: '0.95rem'
+                  fontSize: '16px'
                 }}
               >
+                <option value="">Select a category</option>
                 {categories.map(cat => (
-                  <option key={cat} value={cat}>{cat}</option>
+                  <option key={cat.id} value={cat.name}>{cat.name}</option>
                 ))}
               </select>
             </div>
@@ -482,7 +485,7 @@ function ArticleForm() {
                     padding: '10px 12px',
                     border: '1px solid #e8e8f0',
                     borderRadius: '6px',
-                    fontSize: '0.95rem',
+                    fontSize: '16px',
                     fontFamily: "'Inter', sans-serif"
                   }}
                 />

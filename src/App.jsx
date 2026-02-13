@@ -22,6 +22,8 @@ import TeamCMS from './pages/cms/Team';
 import TeamForm from './pages/cms/TeamForm';
 import Company from './pages/cms/Company';
 import Subscriptions from './pages/cms/Subscriptions';
+import Profile from './pages/cms/Profile';
+import Categories from './pages/cms/Categories';
 
 import './styles/style.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
@@ -46,6 +48,8 @@ function App() {
               <Route path="team/edit/:id" element={<TeamForm />} />
               <Route path="company" element={<Company />} />
               <Route path="subscriptions" element={<Subscriptions />} />
+              <Route path="profile" element={<Profile />} />
+              <Route path="categories" element={<Categories />} />
             </Route>
 
             {/* Public Routes */}

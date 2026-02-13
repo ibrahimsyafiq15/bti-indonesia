@@ -85,6 +85,7 @@ export const articleAPI = {
   
   getCategories: () => fetchAPI('/articles/meta/categories'),
   getTags: () => fetchAPI('/articles/meta/tags'),
+  getAuthors: () => fetchAPI('/articles/meta/authors'),
 };
 
 // Team API
@@ -181,9 +182,35 @@ export const subscriptionAPI = {
   exportCSV: () => `${API_URL}/subscriptions/export/csv`,
 };
 
+// Auth API
+export const authAPI = {
+  updateProfile: (data) => fetchAPI('/auth/profile', {
+    method: 'PUT',
+    body: JSON.stringify(data),
+  }),
+};
+
+// Categories API
+export const categoryAPI = {
+  getPublicCategories: () => fetchAPI('/categories/public'),
+  getCategories: () => fetchAPI('/categories'),
+  getCategory: (id) => fetchAPI(`/categories/${id}`),
+  createCategory: (data) => fetchAPI('/categories', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  }),
+  updateCategory: (id, data) => fetchAPI(`/categories/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify(data),
+  }),
+  deleteCategory: (id) => fetchAPI(`/categories/${id}`, { method: 'DELETE' }),
+};
+
 export default {
   articles: articleAPI,
   team: teamAPI,
   company: companyAPI,
   subscriptions: subscriptionAPI,
+  auth: authAPI,
+  categories: categoryAPI,
 };

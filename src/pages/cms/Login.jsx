@@ -42,7 +42,11 @@ function Login() {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
+      background: '#111E48',
+      backgroundImage: 'linear-gradient(90deg, rgba(17, 30, 72, 0.95) 20%, rgba(42, 61, 122, 0.95) 100%), url(/cta-bg.jpg)',
+      backgroundPosition: 'center, 100% 0',
+      backgroundRepeat: 'no-repeat, no-repeat',
+      backgroundSize: 'cover, 50%',
       padding: '20px',
       fontFamily: "'Inter', sans-serif"
     }}>
@@ -62,12 +66,14 @@ function Login() {
           fontFamily: "'Inter', sans-serif"
         }}>
           <img 
-            src="/logo-footer.png" 
+            src="/logo.png" 
             alt="BTI" 
             style={{ 
               height: '48px',
               width: 'auto',
-              objectFit: 'contain'
+              objectFit: 'contain',
+              display: 'block',
+              margin: '0 auto'
             }}
           />
           <h1 style={{
@@ -140,7 +146,7 @@ function Login() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="admin@bti.co.id"
+                placeholder="admin@bti-indonesia.com"
                 required
                 style={{
                   width: '100%',
@@ -269,7 +275,7 @@ function Login() {
             Demo Credentials:
           </p>
           <p style={{ margin: '0 0 4px 0' }}>
-            <strong>Email:</strong> admin@bti.co.id
+            <strong>Email:</strong> admin@bti-indonesia.com
           </p>
           <p style={{ margin: 0 }}>
             <strong>Password:</strong> admin123

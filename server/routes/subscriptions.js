@@ -67,7 +67,9 @@ router.post('/unsubscribe', async (req, res) => {
 // Get all subscriptions (admin)
 router.get('/', async (req, res) => {
   try {
-    const { page = 1, limit = 50, isActive } = req.query;
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 50;
+    const { isActive } = req.query;
     const offset = (page - 1) * limit;
 
     let whereClause = '';
@@ -79,8 +81,8 @@ router.get('/', async (req, res) => {
     }
 
     const subscriptions = await query(
-      `SELECT * FROM subscriptions ${whereClause} ORDER BY subscribed_at DESC LIMIT ? OFFSET ?`,
-      [...params, parseInt(limit), parseInt(offset)]
+      `SELECT * FROM subscriptions ${whereClause} ORDER BY subscribed_at DESC LIMIT ${limit} OFFSET ${offset}`,
+      params
     );
 
     const [countResult] = await query(
@@ -91,7 +93,7 @@ router.get('/', async (req, res) => {
     res.json({
       subscriptions,
       totalPages: Math.ceil(countResult.total / limit),
-      currentPage: parseInt(page),
+      currentPage: page,
       total: countResult.total
     });
   } catch (error) {

@@ -39,21 +39,6 @@ function Home() {
         <div className="hero-bg">
           <div className="gradient-orb orb-1"></div>
           <div className="gradient-orb orb-2"></div>
-          {/* Secret CMS Access */}
-          <Link 
-            to="/cms/login" 
-            style={{
-              position: 'absolute',
-              bottom: '20px',
-              right: '20px',
-              width: '8px',
-              height: '8px',
-              background: 'rgba(255,255,255,0.05)',
-              borderRadius: '50%',
-              cursor: 'default'
-            }}
-            aria-hidden="true"
-          />
         </div>
         <div className="container">
           <div className="hero-content">
